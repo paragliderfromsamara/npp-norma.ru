@@ -1,0 +1,147 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or any plugin's vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any styles
+ * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
+ * file per style scope.
+ *
+ *= require_tree .
+ *= require_self
+
+ */
+@font-face {
+    font-family: 'Clinica Pro';
+    src: url('/fonts/clinica/clinicapro-400-normal.woff2') format('woff2'), url('/fonts/clinica/clinicapro-400-normal.woff') format('woff'), url('/fonts/clinica/clinicapro-400-normal.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+$content-max-width: 95%;
+#wrapper 
+{
+    position: relative;
+    //top: 55px;
+    width:100%;
+}
+.content
+{
+    position:relative;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    .sub-container
+    {
+        margin-left: auto;
+        margin-right: auto;
+        width:90%;
+    }
+}
+
+
+
+@import 'foundation-sites';
+@import "motion-ui";
+@import "_settings";
+//@include foundation-everything;
+@include foundation-visibility-classes;
+@include foundation-float-classes;
+@include foundation-grid;
+@include foundation-typography;
+@include foundation-button;
+@include foundation-forms;
+@include foundation-thumbnail;
+@include foundation-menu;
+@include foundation-table;
+@include foundation-tooltip;
+@include foundation-menu;
+@include foundation-menu-icon;
+@include foundation-sticky;
+@include foundation-dropdown-menu;
+@include foundation-top-bar;
+@include foundation-tabs;
+@include foundation-orbit;
+@include foundation-reveal;
+@include foundation-close-button;
+@include foundation-callout;
+
+h1 {font-size: 1.5rem; color: $primary-color;}
+h2 {font-size: 1.2rem; }
+#top
+{
+    position:relative;
+    width: 100%;
+    min-width: 600px;
+    background: $black;
+    height: 250px;
+    //top: 2.5rem;
+}
+#subMenuWrapper
+{
+    @extend .top-bar;
+    ul
+    {
+        padding-left: 0.5rem;
+        a {color: $black;}
+        a:hover, li.active a {color: $primary-color;}
+        .menu-text {background-color: $light-gray;}
+    
+    }
+}
+#view_mode_menu
+{
+    ul
+    {
+        li
+        {
+            display: inline-block;
+            padding-right: 0.2rem;
+        }
+        a
+        {
+            color: $dark-gray;
+            @extend .fi-size-l;
+        }
+        a:hover, a.active
+        {
+            color: $primary-lighter;
+        }
+    }
+}
+.tb-pad-xs 
+{
+    padding: 0.5rem 0 0.5rem 0;
+}
+.tb-pad-s 
+{
+    padding: 2rem 0 2rem 0;
+}
+.tb-pad-m 
+{
+    padding: 4rem 0 4rem 0;
+}
+.tb-pad-l 
+{
+    padding: 8rem 0 8rem 0;
+}
+.c-box
+{
+    position: relative;
+    width: 100%;
+    border-top: 1px solid $medium-gray;
+}
+.odd 
+{
+    background-color: $light-gray;
+}
+.even 
+{
+    background-color: $white;
+}
+
+///icons size
+.fi-size-m {font-size: 1.5rem; margin-top: -4px;}
+.fi-size-l {font-size: 1.8rem;}

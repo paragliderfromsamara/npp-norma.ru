@@ -1,0 +1,26 @@
+<div class = 'row'>
+<div class = 'row'>
+    <div id = 'subMenuWrapper' class = 'medium-2 columns hide-for-small-only'>
+        <%= productCategoryMenu %>
+    </div>
+    <div class = 'small-12 medium-10 columns'>
+        <% if @products.blank? %>
+            <p>В данной категории нет ни одного прибора</p>
+        <%else%>
+            <div class = 'row'>
+                <div class = 'small-12 columns'>
+                    <div id = 'view_mode_menu' class = 'float-right'>
+                        <%getCurViewMode%>
+                        <ul>
+                            <li><a<%= ' class = "active"'.html_safe if @v_mode == 'th' %> href = '/products?v_mode=th<%= "&c=#{@cur[:id]}" if @cur[:id].class.name != 'Array' %>'><i class = 'fi-thumbnails'></i></a></li>
+                            <li><a<%= ' class = "active"'.html_safe if @v_mode == 'lst' %> href = '/products?v_mode=lst<%= "&c=#{@cur[:id]}" if @cur[:id].class.name != 'Array' %>'><i class = 'fi-list'></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <%= render 'list_view' if @v_mode == 'lst'%>
+            <%= render 'thumbnails_view' if @v_mode == 'th'%>
+        <%end%>
+
+    </div>
+</div>

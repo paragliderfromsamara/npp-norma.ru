@@ -1,0 +1,75 @@
+<div class = 'row'>
+    <div class = 'small-12 medium-11 medium-offset-1 columns '>
+        <ul class="menu">
+          <li><a href="<%= products_path %>"><i class="fi-arrow-right"></i> <span>К списку продукции</span></a></li>
+          <%if signed_in?%>
+            <li><a href="<%= "/products/#{@product.id}/units" %>"><i class="fi-clipboard"></i> <span>Спецификации</span></a></li>
+          <%end%>
+          <%if admin?%>
+          <li><a href="<%= edit_product_path(@product) %>"><i class="fi-pencil"></i> <span>Изменить</span></a></li>
+          <li><a href="<%= "/products/#{@product.id}" %>" data-confirm = 'Вы уверены что хотите удалить прибор?' method = 'delete'><i class="fi-trash"></i> <span>Удалить</span></a></li>
+          <%end%>
+        </ul>
+    </div>
+</div>
+
+<p id="notice"><%= notice %></p>
+<div class = 'c-box odd'>
+    <div class = 'row tb-pad-m'>
+        <div class = 'small-12 medium-5 medium-offset-1 columns '>
+    		<div style = 'width: 100%;'>
+    			<% if @product.photo != nil %><a href = "<%= @product.photo.link %>" data-lightbox="roadtrip" title = "<%= @product.photo.description %>"><%= image_tag @product.photo.link.thumb, class: 'float-center' %></a><% end %>
+    		</div>
+    		<div style = 'height: 60;'>
+    			<% @photos.each do |photo| %>
+    				<a href = "<%= photo.link %>" data-lightbox="roadtrip" title = "<%= photo.description %>"><%= image_tag photo.link.mini, :height => '30px'  %></a>
+    			<% end %>
+    		</div>
+        </div>
+        <div class = 'small-12 medium-6 columns end'>
+            <div class="callout medium text-center">
+              <h5>Цена*: <%= @product.rur_cost.html_safe %></h5>
+              <%= @product.nds.html_safe %>
+              <hr />
+    			<% if @product.notice.strip != '' %>
+    				<p><%= @product.notice.html_safe %></p>
+    			<% end %>
+                
+            </div>
+    		<div class = 'list_items_parent_block'>
+    			<%= show_options(@product) %>
+    			<%= show_parent_device(@product) %>
+    			<%= comments_list %>
+    		</div>
+        </div>
+    </div>
+</div>
+<div class = 'c-box even'>
+    <div class = 'row tb-pad-s'>
+        <div class = 'small-12 medium-6 medium-offset-1 columns'>
+        	<%= @product.description.html_safe %>
+        </div>
+        <div class = 'small-12 medium-5 columns'>    
+        	<% if @component_types != [] %>
+        			<h3>Комплектующие</h3>
+        			<%= product_show_components_table %>
+        		</div>
+        	<% end %>
+        </div>
+    </div>
+</div>
+
+
+<%= "<hr /><h4>Клиентам</h4>".html_safe if @product.attachment_files != [] %>
+  <br />
+  <%= attachments("document") %>
+  <br />
+  <%= attachments("firmware") %>
+  <br />
+  <%= attachments("softaware") %>
+</div>
+
+<br />
+<br />
+<br />
+

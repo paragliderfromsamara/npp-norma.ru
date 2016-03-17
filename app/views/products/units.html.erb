@@ -1,0 +1,86 @@
+<div id = 'text_wrapper'>
+	<%= render 'add_unit_form' if user_type == 'admin' %>
+	<% if @units != [] %>
+		<% uLink = @product.unit_product_links.where(:unit_id => @unit.id).first %>
+		<ul id = 'componentTypes'>
+			<% @units.each do |unit| %>
+				<a href = "/products/<%= @product.id.to_s %>/units?u=<%= unit.id.to_s %>"'>
+					<li <% if unit == @unit %>id = 'c_type'<%end%>>
+						<p>
+							<%= unit.name %>
+						</p>
+					</li>
+				</a>
+			<% end %>
+		</ul>
+		<br />
+		<br />
+		<h2>
+			<%= @unit.name %>
+		</h2>
+		<br />
+		<p>
+			<b>
+				Используется: 
+			</b>
+			<%= uLink.amount.to_s %> шт.
+		</p>
+		<br />
+		<td id = 'linkRow'><%= link_to "Убрать из \"#{@product.s_name}\"", uLink, :method => :delete, :data => { :confirm => 'Вы уверены, что хотите убрать данную спецификацию?' } if user_type == 'admin' %></td>
+		<br />
+		<br />
+		<% if @unit.components != [] %>
+			
+			<table id = 'cTable'>
+				<% @component_types.each do |type| %>
+	
+					<% components = Component.where(:id => @unit.unit_component_links.select(:component_id), :component_type_id => type.id).order('name ASC') %>
+					 
+					<% if components != [] %>
+							<tr>
+								<th colspan = '4'><p><%= type.name%></p></th>
+								<td colspan = '3' id = 'linkRow'><%= link_to 'изменить', edit_component_type_path(type) if user_type == 'admin' %></td>
+							</tr>
+							<tr>
+								<th  id = 'subHeader'></th>
+								<th  id = 'subHeader'><p>Название</p></th>
+								<th  id = 'subHeader'><p>Обозначение</p></th>
+								<th  id = 'subHeader'><p>Количество</p></th>
+								<th id = 'linkRow'></th>
+								<th id = 'linkRow'></th>
+								<th id = 'linkRow'></th>
+							</tr>
+						<% components.each do |component| %>
+						  <% uc_links = @unit.unit_component_links.where(:component_id => component.id) %>
+						  <% uc_links.each do |l| %>
+							<tr>
+								<td id = 'cPhoto'><%= image_tag component.alter_photo_mini %></td>
+								<td><p><%= component.name %></p></td>
+								<td><p><%= component.designation %></p></td>
+								<td id = 'cCost'><p><%= l.number %></p></td>
+								<td id = 'linkRow'><%= link_to 'подробнее', component %></td>
+								<td id = 'linkRow'><%= link_to 'изменить', edit_unit_component_link_path(l) if user_type == 'admin' %></td>
+								<td id = 'linkRow'><%= link_to 'удалить', l, :method => :delete, :data => { :confirm => 'Вы уверены?' } if user_type == 'admin' %></td>
+							</tr>
+						  <% end %>
+						 
+						<% end %>
+					<% end %>
+				<% end %>
+			</table>
+		<% else %>
+			<p>
+				К данному узлу не добавлено ни одного компонента.
+			</p>
+		<% end %>
+	<% else %>
+		<br />
+		<br />
+		<p>
+			Нет ни одной спецификации к данному продукту.
+		</p>
+
+	<% end %>
+	<br />
+	<br />
+</div>

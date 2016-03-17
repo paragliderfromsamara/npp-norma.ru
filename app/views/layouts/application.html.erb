@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title><%= my_title %></title>
+    <%= stylesheet_link_tag "application" %>
+    <%= javascript_include_tag "application", 'data-turbolinks-track' => true %>
+    <%= csrf_meta_tags %>
+  </head>
+
+  <body>
+  
+              <div class="title-bar tb-pad-xs" data-responsive-toggle="responsive-menu" data-hide-for="medium">
+                      <div class = 'row'>
+                          <div class = 'small-12 columns tb-pad-xs'>
+                              <button class="menu-icon float-left" type="button" data-toggle></button>
+                              <div class="title-bar-title float-left">НПП Норма</div>
+                          </div>
+                      </div>
+              </div>
+     <div class="top-bar">
+              <div class = 'row '>
+                  <div class = 'small-12'> 
+                        <div id="responsive-menu" class = ''>
+                              <div class="top-bar-left">
+                                <ul class="dropdown menu tb-pad-xs" data-dropdown-menu>
+                                  <%= drawMenu %>
+                                </ul>
+                              </div>
+                        </div>
+                      <div class="top-bar-right">
+                          <!--
+                        <ul class="menu">
+                          <li><input type="search" placeholder="Search"></li>
+                          <li><button type="button" class="button">Search</button></li>
+                        </ul>
+                              -->
+                      </div>
+                  </div>
+              </div>
+     </div>
+
+    <div id = "top" class = ' hide-for-small-only'>
+        <div class = 'row'>
+            <div class = 'medium-5 columns'>
+                <img src = '/files/logo.png' class = 'tb-pad-s'>
+            </div>
+            <div class = 'medium-6 columns'>
+                <img src = '/files/main_title.png' >
+            </div>
+           <div class = 'medium-1 columns'>
+           </div>
+        </div>
+    </div>
+  
+    <div id = "wrapper">
+    <%= my_header.html_safe %>
+    <% if !@subMenu.blank? %>
+      <div id = 'subMenuWrapper' class = 'hide-for-small-only'>
+          <div class = 'row'>
+              <div class = 'medium-11 medium-offset-1 columns'>
+                  <%= @subMenu %>
+              </div>
+          </div>
+      </div>
+    <%end%>
+    <%= yield %>
+    </div>
+      
+  </body>
+</html>

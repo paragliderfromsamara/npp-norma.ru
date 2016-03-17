@@ -1,0 +1,95 @@
+@import "foundation-sites";
+@include foundation-global-styles;
+$primary-color: #857065;
+$primary-lighter: #d1b1a0;
+$anchor-color: $primary-color;
+$light-gray: #f5f5f5;
+$global-width: rem-calc(1200);
+$body-font-family: 'Clinica Pro', Helvetica, Roboto, Arial, sans-serif;
+///top-bar settings
+$topbar-link-color: $black;
+$topbar-link-hover-color: $primary-color;
+$topbar-padding: 0; 
+$topbar-background: $white;
+$topbar-submenu-background: $white;
+$menu-item-background-active: none;
+$menu-item-color-active: $primary-lighter;
+$topbar-title-spacing: 1.1rem;
+$dropdownmenu-border: 1px solid $primary-lighter;
+$dropdownmenu-arrow-color: $primary-lighter;
+///callout
+$callout-background:$primary-lighter;
+///text-styles
+$subheader-color: $primary-lighter;
+///
+.title-bar
+{
+    background: $black;
+    color: $white;
+    button{margin-left: 1rem; margin-top: 0.2rem;}
+    top: 0;
+    padding: 0;
+    margin: 0;
+    .title-bar-title
+    {
+        top: 0;
+        margin-left: 0.5rem;
+    }
+}
+
+.top-bar
+{
+    //.row{padding: 1rem 0 1rem 0;}
+    @include breakpoint(medium)
+    {
+    	.menu-text
+    	{
+    		color: $topbar-link-color;
+    	}
+    	a
+    	{
+    		color: $topbar-link-color;
+    	}
+    	a:hover
+    	{
+    		color: $topbar-link-hover-color;
+    	}
+    }
+    @include breakpoint(small only)
+    {
+        background: $black;
+        div ul {background: $black;}
+    	.menu-text
+    	{
+    		color: $white;
+    	}
+    	a
+    	{
+    		color: $white;
+    	}
+    	a:hover
+    	{
+    		color: $primary-lighter;
+    	}
+    }
+
+}
+///top-bar settings end
+///tabs
+//$tab-item-padding: 0.7rem 0.9rem;
+$tab-content-padding: 0.0rem;
+///tabs end
+///orbit
+$orbit-bullet-background: $dark-gray;
+$orbit-bullet-background-active: $black;
+$orbit-bullet-margin-bottom: 0.0rem;
+$orbit-bullet-diameter: 1.0rem;
+$orbit-bullet-margin: 0.3rem;
+///orbit end
+
+///reveal
+$reveal-background: $black;
+$reveal-width: 90%;
+$reveal-border: none;
+$reveal-offset: 10;
+///reveal end

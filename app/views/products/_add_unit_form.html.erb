@@ -1,0 +1,33 @@
+<br />
+<br />
+<% 
+	unitLink = UnitProductLink.new
+%>
+	<%= form_for(unitLink) do |f| %>
+		<%= f.hidden_field :product_id, :value => @product.id %>
+		<fieldset>
+				<legend>Добавить спецификацию к продукту</legend>
+				<div class = 'section group'>
+					<div class = 'col span_2_of_12'>
+						<div class = 'field'>
+							<%= f.label :unit_id, 'Обозначение спецификации' %><br />
+							<%= f.collection_select :unit_id, @product.unused_units, :id, :name %>
+						</div>
+					</div>
+					<div class = 'col span_1_of_12'>
+						<div class = 'field'>
+							<%= f.label :amount, 'Количество' %><br />
+							<%= f.text_field :amount, :size => '3', :value => 1 %>
+						</div>
+					</div>
+					<div class = 'col span_3_of_12'>
+						<div class = 'field'>
+							<br />
+							<%= f.submit 'Добавить'%>
+						</div>
+					</div>
+				</div>
+		</fieldset>
+	<% end %>
+<br />
+<br />

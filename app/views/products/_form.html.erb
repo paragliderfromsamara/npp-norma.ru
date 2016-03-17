@@ -1,0 +1,99 @@
+<div class = 'row'>
+    <div class = 'small-12 medium-10 medium-offset-1'>
+        <%= form_for(@product) do |f| %>
+          <% if @product.errors.any? %>
+            <div id="error_explanation">
+              <h2><%= pluralize(@product.errors.count, "error") %> prohibited this product from being saved:</h2>
+
+              <ul>
+              <% @product.errors.full_messages.each do |msg| %>
+                <li><%= msg %></li>
+              <% end %>
+              </ul>
+            </div>
+          <% end %>
+
+          <div class="field">
+            <%= f.label :category_id, "Категория" %><br />
+            <select name = 'product[category_id]'>
+        		<%= ("<option value = '#{@product.category[:id]}'>#{@product.category[:name]}</option>").html_safe %>
+        		<% @product.categories.each do |cat| %>
+        			<%= ("<option value = '#{cat[:id]}'>#{cat[:name]}</option>").html_safe if cat != @product.category %>
+        		<% end %>
+        	</select>
+          </div>
+          <div class="field">
+            <%= f.label :name, "Полное название" %><br />
+            <%= f.text_field :name %>
+          </div>
+          <div class="field">
+            <%= f.label :short_name, "Сокращенное название" %><br />
+            <%= f.text_field :short_name %>
+          </div>
+          <div class="field">
+            <%= f.label :note, "Краткое описание" %><br />
+            <%= f.text_area :note, :rows => "5", :cols => "80" %>
+          </div>
+          <div class="field">
+            <%= f.label :description, "Описание" %><br />
+            <%= f.text_area :description, :rows => "20", :cols => "80" %>
+          </div>
+            <div class="field">
+            <%= f.label :notice, "Примечание" %><br />
+            <%= f.text_area :notice, :rows => "2", :cols => "80" %>
+          </div>
+          <div class="field">
+            <%= f.label :cost, "Стоимость" %><br />
+            <%= f.text_field :cost %>
+          </div>
+          <div class="field">
+            <%= f.label :in_warehouse, "В наличии" %><br />
+            <%= f.number_field :in_warehouse %>
+          </div>
+          <div class="field">
+            <%= f.label :visibility, "Отображение" %><br />
+            <select name="product[visibility]">
+        		<% if @product.visibility != nil %><option value = "<%= @product.visibility %>"><%= @product.visibility_status(@product.visibility) %></option><% end %>
+        		<% @product.visibility_statuses.each do |status| %>
+        			<% if status[1] != @product.visibility %><option value = "<%= status[1] %>"><%= status[0] %></option><% end %>
+        		<% end %>
+        	</select>
+          </div>
+          <br />
+          <div class="field">
+            <%= f.label :visible_in_slider, "Отображение на главной странице" %> <%= f.check_box(:visible_in_slider, {}, "yes", "no")%> <br />
+          </div>
+          <br />
+  
+          <br />
+         <hr />
+          <b>Фотографии</b>
+          <% if @product.photos != [] %>
+        		<%= link_to 'Редактировать фотографии', photos_path(:product_id => @product.id) %>
+          <% end %>
+          <br />
+          <div class="field">
+        		<%= f.label :uploaded_photos, "Загрузить фотографии" %><br />
+        		<%= f.file_field :uploaded_photos, :multiple => 'true' %>
+          </div>
+          <%= f.collection_select :photo_id, @device_photos, :id, :id if @device_photos != [] and @action == 'update' %>
+          <br />
+
+
+          <div class="actions">
+            <%= f.submit "Создать" if @action == 'create' %>
+        	<%= f.submit "Сохранить изменения" if @action == 'update' %>
+          </div>
+        <% end %>
+        <br />
+        <hr />
+          <b>Ранее загруженные файлы: </b>
+          <br />
+          <%= attachments("document") %>
+          <%= attachments("firmware") %>
+          <%= attachments("software") %>
+
+        <br />
+        <br />
+    </div>
+</div>

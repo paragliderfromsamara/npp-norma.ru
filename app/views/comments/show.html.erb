@@ -1,0 +1,18 @@
+<div id = 'text_wrapper'>
+<p id="notice"><%= notice %></p>
+<%= link_to 'Изменить', edit_comment_path(@comment) if user_type == 'admin' %> <%= link_to 'К отзывам', comments_path %>
+<p>
+  <b>Отзыв по :</b> <span style = 'font-size: 15px;'> <b><%= link_to @comment.product.s_name, @comment.product %></b></span>  <%= image_tag @comment.product.photo.link.mini, :valign => 'middle' if @comment.product.photo != nil  %>
+</p>
+
+<div style = 'width: 600px; position:relative; margin-left: auto; margin-right: auto;'>
+  <%= image_tag @comment.link, :style => 'display: block;', :height => '700px', :id => 'c_ph' %>
+</div>
+</div>
+<br /><br /><br /><br />
+
+
+
+
+
+
