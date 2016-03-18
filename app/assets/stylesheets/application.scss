@@ -21,25 +21,6 @@
     font-style: normal;
 }
 $content-max-width: 95%;
-#wrapper 
-{
-    position: relative;
-    //top: 55px;
-    width:100%;
-}
-.content
-{
-    position:relative;
-    max-width: 1200px;
-    margin-left: auto;
-    margin-right: auto;
-    .sub-container
-    {
-        margin-left: auto;
-        margin-right: auto;
-        width:90%;
-    }
-}
 
 
 
@@ -145,3 +126,48 @@ h2 {font-size: 1.2rem; }
 ///icons size
 .fi-size-m {font-size: 1.5rem; margin-top: -4px;}
 .fi-size-l {font-size: 1.8rem;}
+
+#footer
+{
+    height: 75px;
+    background: $secondary-color;
+    width: 100%;
+    bottom: 0;
+    p
+    {
+        color: $white;
+        font-weight: bolder;
+        padding-top: 1.6rem;
+    }
+}
+.fix-footer
+{
+    position: fixed;
+    bottom: 0;
+}
+.rel-footer
+{
+  position: relative;
+}
+#wrapper 
+{
+    position: relative;
+    //top: 55px;
+    width:100%;
+    //background-color: $black;
+    #bOffset{position: relative; height: 20px;}
+}
+
+.content
+{
+    position:relative;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    .sub-container
+    {
+        margin-left: auto;
+        margin-right: auto;
+        width:90%;
+    }
+}

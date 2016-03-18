@@ -17,7 +17,7 @@
                           </div>
                       </div>
               </div>
-     <div class="top-bar">
+     <div id = 'top_bar' class="top-bar">
               <div class = 'row '>
                   <div class = 'small-12'> 
                         <div id="responsive-menu" class = ''>
@@ -27,19 +27,18 @@
                                 </ul>
                               </div>
                         </div>
-                      <div class="top-bar-right">
-                          <!--
+                      <div class="top-bar-right hide-for-small-only">
                         <ul class="menu">
-                          <li><input type="search" placeholder="Search"></li>
-                          <li><button type="button" class="button">Search</button></li>
+                          <li><i class = 'fi-telephone'></i> 8(846)99-77-524</li>
+                          <li><i class = 'fi-print'></i> 8(846)99-77-523</li>
+                          <li><%= mail_to 'info@npp-norma.ru', "<i class = 'fi-mail'></i> info@npp-norma.ru".html_safe %></li>
                         </ul>
-                              -->
                       </div>
                   </div>
               </div>
      </div>
 
-    <div id = "top" class = ' hide-for-small-only'>
+    <div id = "top" class = 'hide-for-small-only'>
         <div class = 'row'>
             <div class = 'medium-5 columns'>
                 <img src = '/files/logo.png' class = 'tb-pad-s'>
@@ -53,18 +52,30 @@
     </div>
   
     <div id = "wrapper">
-    <%= my_header.html_safe %>
-    <% if !@subMenu.blank? %>
-      <div id = 'subMenuWrapper' class = 'hide-for-small-only'>
-          <div class = 'row'>
-              <div class = 'medium-11 medium-offset-1 columns'>
-                  <%= @subMenu %>
+        <%= my_header.html_safe %>
+        <% if !@subMenu.blank? %>
+          <div id = 'subMenuWrapper' class = 'hide-for-small-only'>
+              <div class = 'row'>
+                  <div class = 'medium-11 medium-offset-1 columns'>
+                      <%= @subMenu %>
+                  </div>
               </div>
           </div>
-      </div>
-    <%end%>
-    <%= yield %>
+        <%end%>
+        <%= yield %>
+        <div id = 'bOffset'>
+        </div>
     </div>
-      
+    
+    <div id = 'footer'> 
+        <div class = 'row'>
+            <div class = 'small-6 columns text-left'>
+                
+            </div>
+            <div class = 'small-6 columns text-right'>
+                <p>Научно-Производственное Предприятие "Норма", <%= Time.now.strftime('%Yг.') %></p>
+            </div>
+        </div>
+    </div>  
   </body>
 </html>
