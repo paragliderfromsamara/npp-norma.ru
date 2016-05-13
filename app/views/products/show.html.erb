@@ -1,5 +1,5 @@
 <div class = 'row'>
-    <div class = 'small-12 medium-11 medium-offset-1 columns '>
+    <div class = 'small-12 medium-12 columns '>
         <ul class="menu">
           <li><a href="<%= products_path %>"><i class="fi-arrow-right"></i> <span>К списку продукции</span></a></li>
           <%if signed_in?%>
@@ -16,17 +16,17 @@
 <p id="notice"><%= notice %></p>
 <div class = 'c-box odd'>
     <div class = 'row tb-pad-m'>
-        <div class = 'small-12 medium-5 medium-offset-1 columns '>
+        <div class = 'small-12 medium-5 columns '>
     		<div style = 'width: 100%;'>
-    			<% if @product.photo != nil %><a href = "<%= @product.photo.link %>" data-lightbox="roadtrip" title = "<%= @product.photo.description %>"><%= image_tag @product.photo.link.thumb, class: 'float-center' %></a><% end %>
+    			<% if @product.photo != nil %><a href = "<%= @product.photo.link %>" data-lightbox="product_<%= @product.id.to_s %>" title = "<%= @product.photo.description %>"><%= image_tag @product.photo.link.thumb, class: 'float-center' %></a><% end %>
     		</div>
-    		<div style = 'height: 60;'>
+    		<div style = 'height: 30px;'   >
     			<% @photos.each do |photo| %>
-    				<a href = "<%= photo.link %>" data-lightbox="roadtrip" title = "<%= photo.description %>"><%= image_tag photo.link.mini, :height => '30px'  %></a>
+    				<a href = "<%= photo.link %>" data-lightbox="product_<%= @product.id.to_s %>" title = "<%= photo.description %>"><%= image_tag photo.link.mini, style: "height: 45px;", class: 'float-left'  %></a>
     			<% end %>
     		</div>
         </div>
-        <div class = 'small-12 medium-6 columns end'>
+        <div class = 'small-12 medium-7 columns end'>
             <div class="callout medium text-center">
               <h5>Цена*: <%= @product.rur_cost.html_safe %></h5>
               <%= @product.nds.html_safe %>
@@ -46,7 +46,7 @@
 </div>
 <div class = 'c-box even'>
     <div class = 'row tb-pad-s'>
-        <div class = 'small-12 medium-6 medium-offset-1 columns'>
+        <div class = 'small-12 medium-7 columns'>
         	<%= @product.description.html_safe %>
         </div>
         <div class = 'small-12 medium-5 columns'>    
@@ -68,8 +68,4 @@
   <br />
   <%= attachments("softaware") %>
 </div>
-
-<br />
-<br />
-<br />
 

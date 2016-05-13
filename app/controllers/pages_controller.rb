@@ -1,7 +1,7 @@
 class PagesController < ApplicationController
   def index
 		@title = "Главная"
-    
+    @products = Product.where(visibility: 'visible', visible_in_slider: 'yes')
   end
 
   def contacts

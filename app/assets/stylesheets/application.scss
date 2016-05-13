@@ -14,6 +14,8 @@
  *= require_self
 
  */
+
+@import 'lightbox';
 @font-face {
     font-family: 'Clinica Pro';
     src: url('/fonts/clinica/clinicapro-400-normal.woff2') format('woff2'), url('/fonts/clinica/clinicapro-400-normal.woff') format('woff'), url('/fonts/clinica/clinicapro-400-normal.ttf') format('truetype');
@@ -22,6 +24,15 @@
 }
 $content-max-width: 95%;
 
+@mixin animation($t)
+	{
+	-webkit-transition-duration: $t;
+    -o-transition-duration: $t;
+    -moz-transition-duration: $t;
+    transition-duration: $t;
+	}
+
+@mixin my_opacity($t){opacity: $t;filter: alpha(opacity=$t*100);-moz-opacity: $t;}
 
 
 @import 'foundation-sites';
@@ -57,7 +68,7 @@ h2 {font-size: 1.2rem; }
     width: 100%;
     min-width: 600px;
     background: $black;
-    height: 250px;
+    //height: 250px;
     //top: 2.5rem;
 }
 #subMenuWrapper
@@ -169,5 +180,40 @@ h2 {font-size: 1.2rem; }
         margin-left: auto;
         margin-right: auto;
         width:90%;
+    }
+}
+
+.th-img-container
+{
+    //height: 160px;
+    //width: 250px;
+    position: relative;
+    .desc-cont
+    {
+        position: absolute;
+        bottom: 0;
+        z-index: 50;
+        background: $black;
+        width: 100%;
+        height: 45px;
+        color: $white;
+        //opacity: 0.4;
+        
+        @include my_opacity(0.4); 
+        p
+        {
+            font-size: 1rem;
+            font-weight: bolder;
+            margin-top: 0.55rem;
+        }
+    }
+    
+}
+.th-img-container:hover
+{
+    .desc-cont
+    {
+        //opacity: 0.8;
+        @include my_opacity(0.7); 
     }
 }

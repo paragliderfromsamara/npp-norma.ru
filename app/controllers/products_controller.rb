@@ -22,13 +22,13 @@ class ProductsController < ApplicationController
   # GET /products/1.json
   def show
     @product = Product.find(params[:id])
-	@photos = @product.photos.where(id: !@product.photo_id) if @product.photo_id?
-	@comments = @product.comments
-	@component_types = @product.component_types
-	@title = @product.s_name
-	@header = @product.s_name
-	@meta_description = @product.note
-	@robots_meta = [{:name => 'ROBOTS', :content => 'INDEX, FOLLOW'}]
+	  @photos = @product.photos.where.not(id: @product.photo_id) #if @product.photo_id?
+	  @comments = @product.comments
+	  @component_types = @product.component_types
+	  @title = @product.s_name
+	  @header = @product.s_name
+	  @meta_description = @product.note
+	  @robots_meta = [{:name => 'ROBOTS', :content => 'INDEX, FOLLOW'}]
     respond_to do |format|
       format.html # show.html.erb
       format.json { render :json => @product }
@@ -56,6 +56,7 @@ class ProductsController < ApplicationController
   def edit
 	@product = Product.find(params[:id])
 	if user_type == 'admin'
+    @header = "Изменение описания прибора"
 		@products = Product.all
 		@action = 'update'
 		@attachment_file = AttachmentFile.new

@@ -12,8 +12,8 @@ module ApplicationHelper
   def mainMenuItems
     [
       {
-        name: "О нас",
-        link: "/about_us"
+        name: "Главная",
+        link: "/"
       },
       {
         name: "Продукция",

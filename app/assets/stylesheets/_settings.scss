@@ -39,7 +39,10 @@ $subheader-color: $primary-lighter;
         margin-left: 0.5rem;
     }
 }
-
+.bg-gray 
+{
+    background-color: $light-gray;
+}
 .top-bar
 {
     //.row{padding: 1rem 0 1rem 0;}
@@ -79,8 +82,10 @@ $subheader-color: $primary-lighter;
 }
 .top-bar-right
 {
-    margin-top: 0.5rem;
+    
+    margin-top: 0.6rem;
     height: 100%;
+    font-size: 0.85rem;
     li
     {
         padding: 0 0.5rem 0 0.5rem;
