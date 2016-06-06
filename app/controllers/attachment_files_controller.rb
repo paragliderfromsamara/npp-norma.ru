@@ -46,7 +46,7 @@ class AttachmentFilesController < ApplicationController
 	if params[:attachment_file][:product_id] != nil and params[:attachment_file][:product_id] != ""
 		product = Product.find_by_id(params[:attachment_file][:product_id])
 		if product != nil
-			directory = "#{params[:attachment_file][:file_type]}/#{product.id.to_s}_#{product.s_name}"
+			directory = "#{params[:attachment_file][:file_type]}/#{product.id.to_s}"
 			if params[:attachment_file][:file_type] != '' and params[:attachment_file][:file_type] != ''
 				add_file(directory, product, params[:attachment_file][:file_type])
 			end
@@ -94,6 +94,6 @@ class AttachmentFilesController < ApplicationController
   private 
   
   def check_admin_grants
-    redirect_to '/404' if user_type == 'admin'
+    redirect_to '/404' if user_type != 'admin'
   end 
 end
