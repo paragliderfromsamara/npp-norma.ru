@@ -2,8 +2,8 @@
 <html>
   <head>
     <meta charset='utf-8' />
-    <%= wicked_pdf_stylesheet_link_tag "pdf" %>
-    <%= wicked_pdf_javascript_include_tag "number_pages" %>
+    <%= stylesheet_link_tag asset_data_base_64("pdf") %>
+       <%= javascript_include_tag asset_data_base_64("number_pages") %>
     <style type = 'text/css'>
     div.alwaysbreak { page-break-before: always; }
     div.nobreak:before { clear:both; }
@@ -29,7 +29,7 @@
                   <%end%>
                   <div>
                       <div style = "width: 59%; display:inline-block;">
-                          <%= image_tag p.photo.link.thumb %>
+                          <%= image_tag asset_data_base_64(p.photo.link.thumb) %>
                       </div>
                       <div style = "width: 40%; display:inline-block; text-align:center; height:100%;">
                           Цена: <b><%= p.rur_cost.html_safe %></b>
