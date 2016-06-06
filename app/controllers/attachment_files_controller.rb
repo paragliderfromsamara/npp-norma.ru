@@ -2,7 +2,7 @@ class AttachmentFilesController < ApplicationController
   # GET /attachment_files
   # GET /attachment_files.json
   include AttachmentFilesHelper
-  before_action check_admin_grants, only: [:new, :edit, :create, :update, :destroy]
+  before_action :check_admin_grants, only: [:new, :edit, :create, :update, :destroy]
   
   def index
     @attachment_files = AttachmentFile.all
