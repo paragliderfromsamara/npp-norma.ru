@@ -1,3 +1,4 @@
+
 <div class = 'row'>
     <div class = 'small-12 medium-12 columns '>
         <ul class="menu">
@@ -5,10 +6,13 @@
           <%if signed_in?%>
             <li><a href="<%= "/products/#{@product.id}/units" %>"><i class="fi-clipboard"></i> <span>Спецификации</span></a></li>
           <%end%>
-          <%if admin?%>
-          <li><a href="<%= edit_product_path(@product) %>"><i class="fi-pencil"></i> <span>Изменить</span></a></li>
+          <%if user_could_edit_product?%>
+              <li><a href="<%= edit_product_path(@product) %>"><i class="fi-pencil"></i> <span>Изменить</span></a></li>
+          <%end%>
+          <%if user_could_del_product?%>
           <li><a href="<%= "/products/#{@product.id}" %>" data-confirm = 'Вы уверены что хотите удалить прибор?' method = 'delete'><i class="fi-trash"></i> <span>Удалить</span></a></li>
           <%end%>
+          
         </ul>
     </div>
 </div>
@@ -18,9 +22,9 @@
     <div class = 'row tb-pad-m'>
         <div class = 'small-12 medium-5 columns '>
     		<div style = 'width: 100%;'>
-    			<% if @product.photo != nil %><a href = "<%= @product.photo.link %>" data-lightbox="product_<%= @product.id.to_s %>" title = "<%= @product.photo.description %>"><%= image_tag @product.photo.link.thumb, class: 'float-center' %></a><% end %>
+    			<% if @product.photo != nil %><a href = "<%= @product.photo.link %>" data-lightbox="product_<%= @product.id.to_s %>" title = "<%= @product.photo.description %>"><%= image_tag @product.photo.link.thumb, class: 'float-center', id: "p_photo" %></a><% end %>
     		</div>
-    		<div style = 'height: 30px;'   >
+    		<div style = 'height: 30px; margin-left:auto; margin-right:auto; padding-top: 3px;' id = 'p_mini_container'>
     			<% @photos.each do |photo| %>
     				<a href = "<%= photo.link %>" data-lightbox="product_<%= @product.id.to_s %>" title = "<%= photo.description %>"><%= image_tag photo.link.mini, style: "height: 45px;", class: 'float-left'  %></a>
     			<% end %>
@@ -30,42 +34,129 @@
             <div class="callout medium text-center">
               <h5>Цена*: <%= @product.rur_cost.html_safe %></h5>
               <%= @product.nds.html_safe %>
-              <hr />
+              
     			<% if @product.notice.strip != '' %>
+                    <hr />
     				<p><%= @product.notice.html_safe %></p>
     			<% end %>
                 
             </div>
     		<div class = 'list_items_parent_block'>
-    			<%= show_options(@product) %>
-    			<%= show_parent_device(@product) %>
-    			<%= comments_list %>
+                <%= show_parent_device(@product) %>	
     		</div>
         </div>
     </div>
 </div>
+<div class = 'c-box'>
+    <div class = 'row'>
+        <ul class="tabs" data-tabs id="product-tabs">
+          <li class="tabs-title is-active"><a href="#desc" aria-selected="true">Описание</a></li>
+          <li class="tabs-title"><a href="#options">Опции(<%= @product.options.size.to_s %>)</a></li>
+          <li class="tabs-title"><a href="#comments">Отзывы(<%= @comments.size %>)</a></li>
+          <li class="tabs-title"><a href="#components">Комплектующие(<%= @product.component_links.size.to_s %>)</a></li>
+          <li class="tabs-title"><a href="#docs">Документация(<%= @product.docs.size.to_s %>)</a></li>
+          <li class="tabs-title"><a href="#soft">ПО(<%= @product.soft.size.to_s %>)</a></li>
+        </ul>
+    </div>
+</div>
 <div class = 'c-box even'>
     <div class = 'row tb-pad-s'>
-        <div class = 'small-12 medium-7 columns'>
-        	<%= @product.description.html_safe %>
+        <% last_visited = update_last_view_list("product", @product.id) %>
+        <div class = 'small-12<%= " medium-6" if !last_visited.blank? %> columns' >
+
+            <div class="" data-tabs-content="product-tabs">
+              <div class="tabs-panel is-active" id="desc">
+    
+                  <% if !@product.description.blank? %>
+                          <h4 >Описание</h4>
+                          <%= @product.description.html_safe %>
+                      
+                  <%end%>
+                  <% if !@product.table_rows.blank? %>
+                      <p>
+                      <h4 >Технические характеристики</h4>
+                      
+                      <table>
+                          <%= @product.table_rows.html_safe %>
+                      </table>
+                      </p>
+                  <%end%>
+
+              </div>
+              <div class="tabs-panel" id="options">
+                    <h4>Опции</h4>
+        			<br />
+        			<% if @product.options.blank? %>
+                        <p>К данному изделию нет никаких опций</p>
+                    <%else%>
+                       <%= productBlocksArray(@product.options).html_safe %>
+                    <%end%>
+              </div>
+              <div class = "tabs-panel" id="comments">
+                  <h4>Отзывы</h4>
+                  <br />
+                  <%if user_type == 'admin'%>
+                      <p>
+                          <a href = '<%= new_comment_path %>'><i class = 'fi-plus'></i> Добавить отзыв</a>
+                      </p>
+                  <%end%>
+                  <% if @comments.blank? %>
+                      <p>
+                          Нет ни одного отзыва по данному изделию
+                      </p>
+                  <%else%>
+                      <%@comments.each do |c|%>
+                          <p><%= ("#{link_to("<i class = 'fi-x'></i>".html_safe, c, method: :delete)} #{link_to("<i class = 'fi-pencil'></i>".html_safe, edit_comment_path(c))}<br />").html_safe if user_type == 'admin' %><a href = "<%= c.link %>" data-lightbox="product_comments" title = "<%= c.from %>"><%= image_tag c.link.thumb, class: "thumbnail" %></a></p>
+                      <%end%>
+                  <%end%>
+              </div>
+              <div class = "tabs-panel" id="components">
+                  <h4>Комплектующие</h4>
+                  <br />
+              	<% if @component_types != [] %>
+              			<%= product_show_components_table %>
+                <% else %>
+                    <p>
+                        Отдельно производимые комплектующие для данного изделия отсутствуют
+                    </p>
+              	<% end %>
+              </div>
+              <div class = "tabs-panel" id="docs">
+                  <h4>Документация</h4>
+                  <br />
+                  <% if @product.docs.blank? %>
+                      <p>
+                          К данному изделию документация не загружена
+                      </p>
+                  <%else%>
+                      <% @product.docs.each do |d| %>
+                          <p><%= link_to(("<i class = 'fi-page-pdf'></i> #{d.name}").html_safe, d.link) %></p>
+                      <%end%>
+                  <%end%>
+              </div>
+              <div class = "tabs-panel" id="soft">
+                  <h4>Программное обеспечение</h4>
+                  <br />
+                  <% if @product.soft.blank? %>
+                      <p>
+                          К данному изделию нет загруженного ПО
+                      </p>
+                  <%else%>
+                      <% @product.soft.each do |s| %>
+                          <p><%= link_to(("<i class = 'fi-archive'></i> #{s.name}").html_safe, s.link) %></p>
+                      <%end%>
+                  <%end%>
+              </div>
+            </div>
+         
         </div>
-        <div class = 'small-12 medium-5 columns'>    
-        	<% if @component_types != [] %>
-        			<h3>Комплектующие</h3>
-        			<%= product_show_components_table %>
-        		</div>
-        	<% end %>
+        <% if !last_visited.blank? %>
+        <div class = 'small-12 medium-5 columns' >
+            <h4>Ранее просмотренные изделия</h4>
+            <%= last_visited.html_safe %>
         </div>
+        <%end%>
     </div>
 </div>
 
-
-<%= "<hr /><h4>Клиентам</h4>".html_safe if @product.attachment_files != [] %>
-  <br />
-  <%= attachments("document") %>
-  <br />
-  <%= attachments("firmware") %>
-  <br />
-  <%= attachments("softaware") %>
-</div>
 

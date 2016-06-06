@@ -1,6 +1,6 @@
 class Component < ActiveRecord::Base
   attr_accessor :type_name, :products_list
-  attr_accessible :cost, :description, :name, :photo_id, :component_type_id, :type_name, :uploaded_photos, :products_list, :spec_component_type_id, :designation, :quantitative_measure_id
+  attr_accessible :cost, :description, :note, :name, :short_name, :photo_id, :component_type_id, :type_name, :uploaded_photos, :products_list, :spec_component_type_id, :designation, :quantitative_measure_id
 
   
   
@@ -80,46 +80,11 @@ class Component < ActiveRecord::Base
   
   
   def component_type_validation
-	if component_type_id == nil and type_name.strip == ''
-		errors.add(:component_type, "Выберите тип компонента")
-	end
+  	if component_type_id == nil and type_name.strip == ''
+  		errors.add(:component_type, "Выберите тип компонента")
+  	end
   end
   
-  def rur_cost
-	(self.cost == 0.0 || self.cost == nil)? 'Цена не указана':(cost.to_s + ' рублей')
-  end
-  
-  def uploaded_photos=(attrs)
-	attrs.each {|attr| self.photos.build(:link => attr)}
-  end
-  
-  def alter_photo
-	if get_photo == nil
-		return '/files/nophoto.jpg'
-	else
-		return get_photo.link
-	end
-  end
-  
-  def alter_photo_mini
-	if get_photo == nil
-		return '/files/nophoto_mini.jpg'
-	else
-		return get_photo.link.mini
-	end
-  end
-  
-  def get_photo
-	p = nil
-	if self.photo == nil
-		if self.photos != []
-			self.update_attribute(:photo_id, self.photos.first.id)
-			p = self.photo
-		end
-	else
-		p = self.photo
-	end
-	return p
-  end
+
   
 end

@@ -1,0 +1,71 @@
+<div class = 'row'>
+    <div class = 'small-12 medium-10 medium-offset-1'>
+<%= form_for(@component) do |f| %>
+  <% if @component.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@component.errors.count, "error") %> prohibited this component from being saved:</h2>
+      <ul>
+		  <% @component.errors.full_messages.each do |msg| %>
+			<li><%= msg %></li>
+		  <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <div class="field">
+	<% componentTypes = ComponentType.order('name ASC') %>
+    <%= f.label :component_type_id, 'Тип компонента' %><br />
+		<%= f.collection_select :component_type_id, componentTypes, :id, :name, :prompt => 'Выберите тип компонента из списка'  %><br /><br />
+		<p>Если в списке нет нужного наименования введите его здесь</p>
+		<%= f.text_field :type_name %>
+  </div>
+  <br />
+  <div class="field">
+    <%= f.label :name, 'Полное название' %><br />
+    <%= f.text_field :name %>
+  </div>
+  <div class="field">
+    <%= f.label :short_name, 'Короткое название' %><br />
+    <%= f.text_field :short_name %>
+  </div>
+  <div class="field">
+    <%= f.label :cost, 'Стоимость' %><br />
+    <%= f.text_field :cost %>
+  </div>
+  <br /><br />
+  <div class="field">
+    <%= f.label :uploaded_photos, "Фото компонента" %><br />
+	<%= f.file_field :uploaded_photos, :multiple => 'true' %>
+  </div>
+  <br /><br />
+  <div class="field">
+    <%= f.label :note, 'Краткое описание' %><br />
+    <%= f.text_area :note %>
+  </div>
+  <div class="field">
+    <%= f.label :description, 'Описание' %><br />
+    <%= f.text_area :description %>
+  </div>
+  <% products = Product.order('name ASC') %>
+  <% if products != [] %>
+	  <%= f.fields_for :products_list do |t| %>
+		  <div class="field">
+			<fieldset>
+				<legend>Где используется</legend>
+				<% products.each do |p| %>
+					<% link = p.component_links.where(:component_id => @component.id) %>
+					<% if link == [] %>
+						<%= t.check_box p.id.to_s.to_sym %> <%= t.label p.id.to_s.to_sym, p.s_name %><br />
+					<% else %>
+						<%= t.check_box p.id.to_s.to_sym, :checked => true %> <%= t.label p.id.to_s.to_sym, p.s_name %><br />
+					<% end %>
+				<% end %>
+			</fieldset>
+		  </div><br />
+	  <% end %>
+  <% end %>
+  <div class="actions">
+    <%= f.submit 'Сохранить' %>
+  </div>
+<% end %>
+</div>
+</div>

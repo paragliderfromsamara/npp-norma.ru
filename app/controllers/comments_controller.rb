@@ -1,106 +1,74 @@
 class CommentsController < ApplicationController
-  # GET /comments
-  # GET /comments.json
-  def index
-    @comments = Comment.all
-	@title = "Отзывы по продукции"
-	@header = @title
-	@meta_description = "Отзывы заказчиков по продукции."
-    respond_to do |format|
-      format.html # index.html.erb
-      format.json { render :json => @comments }
-    end
-  end
-
-  # GET /comments/1
-  # GET /comments/1.json
-  def show
-    @comment = Comment.find(params[:id])
-	@title = "Отзыв от #{@comment.from}"
-	@header = @title
-    respond_to do |format|
-      format.html # show.html.erb
-      format.json { render :json => @comment }
-    end
-  end
-
-  # GET /comments/new
-  # GET /comments/new.json
+  
+  before_action :check_admin
+  
   def new
-	if user_type == 'admin'
+    @title = @header = "Новый отзыв"
 		@comment = Comment.new
-		@products = Product.find(:all, :order => 'name ASC')
+		@products = Product.order('name ASC')
 		respond_to do |format|
 		  format.html # new.html.erb
 		  format.json { render :json => @comment }
 		end
-	else
-		redirect_to '/otzyv'
-	end
   end
 
   # GET /comments/1/edit
   def edit
-	if user_type == 'admin'
-		@comment = Comment.find(params[:id])
-	else
-		redirect_to '/otzyv'
-	end
+    @comment = Comment.find(params[:id])
+    @title = @header = "Редактировать отзыв"
+    @products = Product.order('name ASC')
   end
 
   # POST /comments
   # POST /comments.json
   def create
-	if user_type == 'admin'
 		@comment = Comment.new(params[:comment])
 
 		respond_to do |format|
 		  if @comment.save
-			format.html { redirect_to @comment, :notice => 'Comment was successfully created.' }
+			format.html { redirect_to @comment.product, :notice => 'Comment was successfully created.' }
 			format.json { render :json => @comment, :status => :created, :location => @comment }
 		  else
+        @title = @header = "Новый отзыв"
 			format.html { render :action => "new" }
 			format.json { render :json => @comment.errors, :status => :unprocessable_entity }
 		  end
 		end
-	else
-		redirect_to '/otzyv'
-	end
   end
 
   # PUT /comments/1
   # PUT /comments/1.json
   def update
-	if user_type == 'admin'
 		@comment = Comment.find(params[:id])
 
 		respond_to do |format|
 		  if @comment.update_attributes(params[:comment])
-			format.html { redirect_to @comment, :notice => 'Comment was successfully updated.' }
+			format.html { redirect_to @comment.product, :notice => 'Comment was successfully updated.' }
 			format.json { head :no_content }
 		  else
+        @title = @header = "Редактировать отзыв"
 			format.html { render :action => "edit" }
 			format.json { render :json => @comment.errors, :status => :unprocessable_entity }
 		  end
 		end
-	else
-		redirect_to '/otzyv'
-	end
   end
 
   # DELETE /comments/1
   # DELETE /comments/1.json
   def destroy
-	if user_type == 'admin'
 		@comment = Comment.find(params[:id])
+    p = @comment.product
 		@comment.destroy
-
 		respond_to do |format|
-		  format.html { redirect_to comments_url }
+		  format.html { redirect_to p }
 		  format.json { head :no_content }
 		end
-	else
-		redirect_to '/otzyv'
-	end
+  end
+  
+  
+  private 
+  
+  def check_admin
+    redirect_to root_path if user_type != 'admin'
   end
 end

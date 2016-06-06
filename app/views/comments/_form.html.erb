@@ -1,29 +1,43 @@
-<%= form_for(@comment) do |f| %>
-  <% if @comment.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@comment.errors.count, "error") %> prohibited this comment from being saved:</h2>
+<div class = 'row'>
+    <div class = "small-12 columns">
+        <%= form_for(@comment) do |f| %>
+          <% if @comment.errors.any? %>
+            <div id="error_explanation">
+              <h2><%= pluralize(@comment.errors.count, "error") %> prohibited this comment from being saved:</h2>
 
-      <ul>
-      <% @comment.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-      </ul>
+              <ul>
+              <% @comment.errors.full_messages.each do |msg| %>
+                <li><%= msg %></li>
+              <% end %>
+              </ul>
+            </div>
+          <% end %>
+
+          <div class="field">
+            <%= f.label :product_id, 'Прибор, которому адресован отзыв' %><br />
+            <%= f.collection_select :product_id, @products, :id, :s_name, :prompt => "Выберите прибор..." %>
+          </div>
+          <div class="field">
+            <%= f.label :from, "Название организации" %><br />
+            <%= f.text_field :from %>
+          </div>
+          <% if controller.action_name == 'new' || controller.action_name == 'create' %>
+          <div class="field">
+            <%= f.label :link, 'Скан отзыва' %><br />
+            <%= f.file_field :link %>
+            <%= f.hidden_field :link_cache %>
+            
+          </div>
+          <%else%>
+              <a href = "<%= @comment.link %>" data-lightbox="product_comments" title = "<%= @comment.from %>"><%= image_tag @comment.link.thumb, class: "thumbnail" %></a>
+              <%= f.file_field :link_cache %>
+              <%= f.hidden_field :link_cache %>
+          <%end%>
+
+          <div class="actions">
+            <%= f.submit 'Сохранить' %>
+          </div>
+        <% end %>
     </div>
-  <% end %>
+</div>
 
-  <div class="field">
-    <%= f.label :product_id, 'Прибор, которому адресован отзыв' %><br />
-    <%= f.collection_select :product_id, @products, :id, :s_name, :prompt => "Выберите прибор..." %>
-  </div>
-  <div class="field">
-    <%= f.label :link, 'Скан отзыва' %><br />
-    <%= f.file_field :link %>
-  </div>
-  <div class="field">
-    <%= f.label :from, "Название организации" %><br />
-    <%= f.text_field :from %>
-  </div>
-  <div class="actions">
-    <%= f.submit 'Сохранить' %>
-  </div>
-<% end %>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8' />
+    <%= wicked_pdf_stylesheet_link_tag "pdf" %>
+    <%= wicked_pdf_javascript_include_tag "number_pages" %>
+    <style type = 'text/css'>
+    div.alwaysbreak { page-break-before: always; }
+    div.nobreak:before { clear:both; }
+    div.nobreak { page-break-inside: avoid; }
+     body {font-family: Tahoma;}  
+     table {width: 100%;}
+    </style>
+  </head>
+  <body>
+      <body onload='number_pages'>
+          <div id="header">
+              <%= @title %>
+          </div>
+          <div id="content">
+              <% @products.each do |p| %>
+                  <h3>
+                      <%= p.s_name %>
+                  </h3>
+                  <% if p.name != p.s_name%>
+                  <h4>
+                      <%= p.name %>
+                  </h4>
+                  <%end%>
+                  <div>
+                      <div style = "width: 59%; display:inline-block;">
+                          <%= wicked_pdf_image_tag p.photo.link.thumb %>
+                      </div>
+                      <div style = "width: 40%; display:inline-block; text-align:center; height:100%;">
+                          Цена: <b><%= p.rur_cost.html_safe %></b>
+                      </div>
+                  </div>
+                  <%= p.description.html_safe %>
+                  <% if p != @products.last %>
+                  <div class = 'alwaysbreak'>
+                  </div>
+                  <%end%>
+              <%end%>
+          </div>
+          
+      </body>
+  </body>
+</html>

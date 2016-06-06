@@ -1,6 +1,8 @@
 class ProductsController < ApplicationController
   # GET /products
   # GET /products.json
+  before_action :check_grants#, only: [:new, :create, :edit, :update, :destroy]
+  
   def index
 	product = Product.new
 	@cur = product.categoryById((params[:c]).to_i)
@@ -21,6 +23,7 @@ class ProductsController < ApplicationController
   # GET /products/1
   # GET /products/1.json
   def show
+    
     @product = Product.find(params[:id])
 	  @photos = @product.photos.where.not(id: @product.photo_id) #if @product.photo_id?
 	  @comments = @product.comments
@@ -32,13 +35,15 @@ class ProductsController < ApplicationController
     respond_to do |format|
       format.html # show.html.erb
       format.json { render :json => @product }
+      format.pdf do 
+        render pdf: "file_name"   # Excluding ".pdf" extension.
+      end
     end
   end
 
   # GET /products/new
   # GET /products/new.json
   def new
-	if user_type == 'admin'
 		@product = Product.new
 		@products = Product.all
 		@attachment_file = AttachmentFile.new
@@ -47,29 +52,21 @@ class ProductsController < ApplicationController
 		  format.html # new.html.erb
 		  format.json { render :json => @product }
 		end
-	else
-		redirect_to products_path
-	end
   end
 
   # GET /products/1/edit
   def edit
-	@product = Product.find(params[:id])
-	if user_type == 'admin'
+	  @product = Product.find(params[:id])
     @header = "Изменение описания прибора"
 		@products = Product.all
 		@action = 'update'
 		@attachment_file = AttachmentFile.new
 		@device_photos = @product.photos(:order => 'id ASC')
-	else
-		redirect_to @product
-	end
   end
 
   # POST /products
   # POST /products.json
   def create
-	if user_type == 'admin'
 		@product = Product.new(params[:product])
 		respond_to do |format|
 		  if @product.save
@@ -84,16 +81,12 @@ class ProductsController < ApplicationController
 			format.json { render :json => @product.errors, :status => :unprocessable_entity }
 		  end
 		end
-	else
-		redirect_to products_path
-	end
   end
 
   # PUT /products/1
   # PUT /products/1.json
   def update
     @product = Product.find(params[:id])
-	if user_type == 'admin'
 		respond_to do |format|
 		  if @product.update_attributes(params[:product])
 			if @product.photo == nil
@@ -107,13 +100,10 @@ class ProductsController < ApplicationController
 			format.json { render :json => @product.errors, :status => :unprocessable_entity }
 		  end
 		end
-	else
-		redirect_to @product
-	end
   end
 
   def units
-	if signed_in?
+    
 		@product = Product.find_by_id(params[:id])
 		@units = @product.units
 		@component_types = ComponentType.order('name ASC')
@@ -124,22 +114,33 @@ class ProductsController < ApplicationController
 		end
 		@title = @header = "Спецификации для \"#{@product.s_name}\""
 		@unit_product_link = UnitProductLink.new
-	else
-		redirect_to '/404'
-	end
   end
   # DELETE /products/1
   # DELETE /products/1.json
   def destroy
-	if user_type == 'admin'
 		@product = Product.find(params[:id])
 		@product.destroy
 		respond_to do |format|
 		  format.html { redirect_to products_url }
 		  format.json { head :no_content }
 		end
-	else
-		redirect_to products_path
-	end
   end
+  
+  private 
+  
+  def check_grants
+    case self.action_name
+    when "index"
+      user_could_see_product_list?(true)
+    when "show"
+      user_could_see_product?(true)
+    when "new", "create"
+      user_could_add_product?(true)
+    when "edit", "update"
+      user_could_edit_product?(true)
+    when "units"
+      user_could_see_units_list?(true)
+    end
+  end
+  
 end

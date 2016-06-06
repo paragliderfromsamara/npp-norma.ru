@@ -22,6 +22,11 @@
         		<% end %>
         	</select>
           </div>
+          <div class = 'field'>
+              <% products = Product.all.order("name ASC") %>
+              <%= f.label :product_id, "Это опция для..." %><br />
+              <%= f.collection_select :product_id, products, :id, :s_name, prompt: "Выберите опцию" %>
+          </div>
           <div class="field">
             <%= f.label :name, "Полное название" %><br />
             <%= f.text_field :name %>
@@ -37,6 +42,12 @@
           <div class="field">
             <%= f.label :description, "Описание" %><br />
             <%= f.text_area :description, :rows => "20", :cols => "80" %>
+          </div>
+          <div class="field">
+            <%= f.label :table_rows, "Таблица характеристик" %><br />
+            <%= f.hidden_field :table_rows %>
+            <div id = "tableRowsPanel">
+            </div>
           </div>
             <div class="field">
             <%= f.label :notice, "Примечание" %><br />
@@ -92,8 +103,14 @@
           <%= attachments("document") %>
           <%= attachments("firmware") %>
           <%= attachments("software") %>
+        <%= form_for(@attachment_file) do |f| %>
+        	<%= f.hidden_field :product_id, :value => @product.id %>
+        		<span>Добавить файл:</span>
+        		<br />
+        		<%= f.file_field :link %>
+        		<%= collection_list(@attachment_file.file_types, "attachment_file[file_type]", []) %>
+        		<%= f.submit "Загрузить" %>
 
-        <br />
-        <br />
+        <% end %>
     </div>
 </div>

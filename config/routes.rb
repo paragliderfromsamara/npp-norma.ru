@@ -3,15 +3,18 @@ Rails.application.routes.draw do
   resources :products
   resources :sessions, :only => [:new, :create, :destroy]
   resources :users
-  resources :comments
+  resources :comments, only: [:new, :create, :edit, :update, :destroy]
   resources :components
   resources :component_types
   resources :photos
   resources :attachment_files
   
-  get "/index" => "pages#index"
+  get "/migrate_components" => "components#migrate_components"
+  get "/products/:id/units" => "products#units"
+  get "/index" => "products#index"
   get "/contacts" => "pages#contacts"
   get "/about_us" => "pages#about_us"
+  get "/price_list" => "pages#price_list"
   
   get "/signin" => "sessions#new"
   get "/signout" => "sessions#destroy"
@@ -20,7 +23,7 @@ Rails.application.routes.draw do
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  root 'pages#index'
+  root 'products#index'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

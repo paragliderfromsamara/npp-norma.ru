@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8' />
+    <%= wicked_pdf_stylesheet_link_tag "pdf" %>
+    <%= wicked_pdf_javascript_include_tag "number_pages" %>
+    <style type = 'text/css'>
+    div.alwaysbreak { page-break-before: always; }
+    div.nobreak:before { clear:both; }
+    div.nobreak { page-break-inside: avoid; }
+        
+    </style>
+  </head>
+  <body>
+      <body onload='number_pages'>
+          <div id="header">
+              <%= @title %>
+          </div>
+          <div id="content">
+            <%= wicked_pdf_image_tag @product.photo.link.thumb %>
+            
+            <%= @product.description.html_safe %>
+            
+          </div>
+          
+      </body>
+  </body>
+</html>

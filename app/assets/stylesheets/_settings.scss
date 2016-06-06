@@ -4,7 +4,8 @@
 @include foundation-global-styles;
 $primary-color: #857065;
 $primary-lighter: #d1b1a0;
-$anchor-color: $primary-color;
+$anchor-color: $black;
+$anchor-color-hover: $primary-color;
 $light-gray: #f5f5f5;
 $global-width: rem-calc(1200);
 
@@ -24,7 +25,11 @@ $dropdownmenu-arrow-color: $primary-lighter;
 $callout-background:$primary-lighter;
 ///text-styles
 $subheader-color: $primary-lighter;
+///tab
+ul.tabs, li.tabs-title {border-width: 0;} 
+$tab-item-font-size: rem-calc(14);
 ///
+
 .title-bar
 {
     background: $black;

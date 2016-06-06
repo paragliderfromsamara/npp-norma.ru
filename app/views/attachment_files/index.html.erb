@@ -1,0 +1,27 @@
+<h1>Listing attachment_files</h1>
+
+<table>
+  <tr>
+    <th>Link</th>
+    <th>Product</th>
+    <th>Type</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @attachment_files.each do |attachment_file| %>
+  <tr>
+    <td><%= attachment_file.link %></td>
+    <td><%= attachment_file.product_id %></td>
+    <td><%= attachment_file.type %></td>
+    <td><%= link_to 'Show', attachment_file %></td>
+    <td><%= link_to 'Edit', edit_attachment_file_path(attachment_file) %></td>
+    <td><%= link_to 'Destroy', attachment_file, :method => :delete, :data => { :confirm => 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Attachment file', new_attachment_file_path %>

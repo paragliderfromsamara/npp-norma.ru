@@ -1,0 +1,48 @@
+<div id = 'text_wrapper'>
+<% if user_type == 'admin'%>
+	<%= link_to 'Добавить компонент', new_component_path %>
+	<br />
+	<br />
+<% end %>
+<%= componentTypesList %>
+
+<table id = 'cTable'>
+	<% if @components != [] %>
+				<tr>
+					<th  id = 'subHeader'></th>
+					<th  id = 'subHeader'><p>Название</p></th>
+					<th  id = 'subHeader'><p>Обозначение</p></th>
+					<th  id = 'subHeader'><p>Цена, руб.</p></th>
+					<th id = 'linkRow'></th>
+					<th id = 'linkRow'></th>
+					<th id = 'linkRow'></th>
+				</tr>
+				<% @components.each do |component| %>
+				  <tr>
+					<td id = 'cPhoto'><%= image_tag component.alter_photo_mini %></td>
+					<td><p><%= component.name %></p></td>
+					<td><p><%= component.designation %></p></td>
+					<td id = 'cCost'><p><%= component.cost %></p></td>
+					<td id = 'linkRow'><%= link_to 'подробнее', component %></td>
+					<td id = 'linkRow'><%= link_to 'изменить', edit_component_path(component) if user_type == 'admin' %></td>
+					<td id = 'linkRow'><%= link_to 'удалить', component, :method => :delete, :data => { :confirm => 'Are you sure?' } if user_type == 'admin' %></td>
+				  </tr>
+				<% end %>
+	<% else %>
+			<tr>
+				<td colspan = '3' id = 'noComponents'>
+					<p>Нет ни одного компонента данного типа</p>
+				</td>
+				<td id = 'linkRow'>
+				</td>
+				<td id = 'linkRow'>
+				</td>
+				<td id = 'linkRow'>
+				</td>
+			</tr>
+	<% end %>
+</table>
+<br />
+<br />
+
+</div>

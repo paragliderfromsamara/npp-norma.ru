@@ -4,8 +4,8 @@ module AttachmentFilesHelper
 			@directory = "public/uploads/#{directory}"
 			FileUtils.mkdir_p(@directory) unless File.exists?(@directory)
 			uploaded_io = params[:attachment_file][:link]
-				File.open(Rails.root.join(@directory, uploaded_io.original_filename), 'w') do |file|
-					file.write(uploaded_io.read)
+				File.open(Rails.root.join(@directory, uploaded_io.original_filename), 'w:UTF-8') do |file|
+					file.write(uploaded_io.read.encode("ASCII-8BIT").force_encoding("utf-8"))
 				end
 			@link = "/uploads/#{directory}/" +  uploaded_io.original_filename
 			

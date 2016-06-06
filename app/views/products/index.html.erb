@@ -1,4 +1,5 @@
-<div class = 'row'>
+
+<div class = 'row tb-pad-m'>
     <div id = 'subMenuWrapper' class = 'medium-2 columns hide-for-small-only'>
         <%= productCategoryMenu %>
     </div>
@@ -11,8 +12,8 @@
                     <div id = 'view_mode_menu' class = 'float-right'>
                         <%getCurViewMode%>
                         <ul>
-                            <li><a<%= ' class = "active"'.html_safe if @v_mode == 'th' %> href = '/products?v_mode=th<%= "&c=#{@cur[:id]}" if @cur[:id].class.name != 'Array' %>'><i class = 'fi-thumbnails'></i></a></li>
-                            <li><a<%= ' class = "active"'.html_safe if @v_mode == 'lst' %> href = '/products?v_mode=lst<%= "&c=#{@cur[:id]}" if @cur[:id].class.name != 'Array' %>'><i class = 'fi-list'></i></a></li>
+                            <li><a<%= ' class = "active"'.html_safe if @v_mode == 'th' %> href = '?v_mode=th<%= "&c=#{@cur[:id]}" if @cur[:id].class.name != 'Array' %>'><i class = 'fi-thumbnails'></i></a></li>
+                            <li><a<%= ' class = "active"'.html_safe if @v_mode == 'lst' %> href = '?v_mode=lst<%= "&c=#{@cur[:id]}" if @cur[:id].class.name != 'Array' %>'><i class = 'fi-list'></i></a></li>
                         </ul>
                     </div>
                 </div>
@@ -21,5 +22,10 @@
             <%= render 'thumbnails_view' if @v_mode == 'th'%>
         <%end%>
 
+    </div>
+</div>
+<div class = "c-box odd">
+    <div class = 'tb-pad-m'>
+        <%= render template: "pages/about_us" %>
     </div>
 </div>

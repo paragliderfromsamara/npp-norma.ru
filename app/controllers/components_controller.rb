@@ -1,6 +1,7 @@
 class ComponentsController < ApplicationController
   include ComponentsHelper
   include ApplicationHelper
+  before_action :check_admin, only: [:new, :create, :edit, :update, :destroy]
   # GET /components
   # GET /components.json
   def index
@@ -23,8 +24,9 @@ class ComponentsController < ApplicationController
   # GET /components/1.json
   def show
     @component = Component.find(params[:id])
-	@title = @header = @component.name
-	@componentLinks = @component.component_links
+	  @title = @header = @component.name
+    @photos = @component.photos.size > 1 ? @component.photos.where.not(id: @component.get_photo.id) : []
+	  @componentLinks = @component.component_links
     respond_to do |format|
       format.html # show.html.erb
       format.json { render :json => @component }
@@ -34,33 +36,24 @@ class ComponentsController < ApplicationController
   # GET /components/new
   # GET /components/new.json
   def new
-	if user_type == 'admin'
 		@title = @header = 'Новый компонент'
 		@component = Component.new
 		respond_to do |format|
 		  format.html # new.html.erb
 		  format.json { render :json => @component }
 		end
-	else
-		redirect_to '/404'
-	end
   end
 
   # GET /components/1/edit
   def edit
-	if user_type == 'admin'
 		@title = @header = 'Изменение компонента'
 		@component = Component.find(params[:id])
 		@componentTypes = ComponentType.order('name ASC')
-	else
-		redirect_to '/404'
-	end
   end
 
   # POST /components
   # POST /components.json
   def create
-	if user_type == 'admin'
 		componentTypeName = params[:component][:type_name].strip
 		if componentTypeName != '' 
 			componentType = ComponentType.find_by_name(componentTypeName)
@@ -79,16 +72,12 @@ class ComponentsController < ApplicationController
 			format.json { render :json => @component.errors, :status => :unprocessable_entity }
 		  end
 		end
-	else
-		redirect_to '/404'
-	end
   end
 
   # PUT /components/1
   # PUT /components/1.json
   def update
     @component = Component.find(params[:id])
-	if user_type == 'admin'
 		respond_to do |format|
 		  if @component.update_attributes(params[:component])
 			format.html { redirect_to @component, :notice => 'Компонент успешно обновлён' }
@@ -98,15 +87,11 @@ class ComponentsController < ApplicationController
 			format.json { render :json => @component.errors, :status => :unprocessable_entity }
 		  end
 		end
-	else
-		redirect_to '/404'
-	end
   end
 
   # DELETE /components/1
   # DELETE /components/1.json
   def destroy
-	if user_type == 'admin'
 		@component = Component.find(params[:id])
 		@component.destroy
 
@@ -114,13 +99,16 @@ class ComponentsController < ApplicationController
 		  format.html { redirect_to components_url }
 		  format.json { head :no_content }
 		end
-	else
-		redirect_to '/404'
-	end
   end
   
   def migrate_components
-	migrateComponents
-	#redirect_to components_path
+	  migrateComponents
+	  redirect_to components_path
+  end
+  
+  private 
+  
+  def check_admin
+    redirect_to root_path if user_type != 'admin' 
   end
 end

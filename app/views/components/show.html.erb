@@ -1,0 +1,70 @@
+<div class = 'row'>
+    <div class = 'small-12 medium-12 columns '>
+        <ul class="menu">
+          <li><a href="<%= products_path %>"><i class="fi-arrow-right"></i> <span>К списку продукции</span></a></li>
+          <%if admin?%>
+              <li><a href="<%= components_path %>"><i class="fi-arrow-right"></i> <span>К списку компонентов</span></a></li>
+              <li><a href="<%= edit_component_path(@component) %>"><i class="fi-pencil"></i> <span>Изменить</span></a></li>
+              <li><%= link_to '<i class = "fi-trash"></i> <span>Удалить</span>'.html_safe, @component, :data => { :confirm => 'Вы уверены что хотите удалить прибор?' }, :method => :delete%></li>
+          <%end%>
+        </ul>
+    </div>
+</div>
+<p id="notice"><%= notice %></p>
+
+<div class = 'c-box odd'>
+    <div class = 'row tb-pad-m'>
+        <div class = 'small-12 medium-5 columns '>
+    		<div style = 'width: 100%;'>
+                <% if @component.get_photo != nil %><a href = "<%= @component.photo.link %>" data-lightbox="component" title = "<%= @component.photo.description %>"><%= image_tag @component.photo.link.thumb, class: 'float-center', id: "p_photo" %></a><% else %><img src='<%= @component.alter_photo %>'/><% end %>
+    		</div>
+    		<div style = 'height: 30px; margin-left:auto; margin-right:auto; padding-top: 3px;' id = 'p_mini_container'>
+				<% @photos.each do |photo| %>
+					<a href = "<%= photo.link %>" data-lightbox="component" title = "<%= photo.description %>"><%= image_tag photo.link.mini, style: "height: 45px;", class: 'float-left'  %></a>
+				<% end %>
+    		</div>
+        </div>
+        <div class = 'small-12 medium-7 columns end'>
+            <div class="callout medium text-center">
+              <h5>Цена*: <%= @component.rur_cost.html_safe %></h5>
+              <%= @component.nds.html_safe %>
+            </div>
+    		<div class = 'list_items_parent_block'>
+				<% if @componentLinks != [] %>
+					<%= show_binded_products.html_safe %>
+				<% else %>
+					<b>Нигде не используется</b>
+				<% end %>
+    		</div>
+        </div>
+    </div>
+</div>
+
+<div class = 'c-box even'>
+    <div class = 'row tb-pad-s'>
+        <% last_visited = update_last_view_list("component", @component.id) %>
+        <div class = 'small-12<%= " medium-6" if !last_visited.blank? %> columns' >
+            <h4>
+                Описание
+            </h4>
+            <br />
+            <% if @component.description.blank? %>
+                <p>
+                    Описание отсутствует
+                </p>
+            <%else%>
+                <%= @component.description.html_safe %>
+            <%end%>
+        </div>
+        <% if !last_visited.blank? %>
+            <div class = 'small-12 medium-5 columns' >
+                <h4>Ранее просмотренные изделия</h4>
+                <%= last_visited.html_safe %>
+            </div>
+        <%end%>
+    </div>
+</div>
+        
+
+
+

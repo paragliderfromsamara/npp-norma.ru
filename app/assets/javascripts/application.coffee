@@ -12,6 +12,7 @@
 #
 #= require turbolinks
 #= require jquery
+#= require jquery_ujs
 #= require motion-ui
 #= require foundation-sites
 #= require_tree .
