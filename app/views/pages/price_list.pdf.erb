@@ -29,8 +29,8 @@
                   <%end%>
                   <div>
                       <div style = "width: 59%; display:inline-block;">
-                          <%= wicked_pdf_image_tag(p.photo.link.thumb) %>
-                          <%= params.key?('debug') ? image_tag(p.photo.link.thumb) : wicked_pdf_image_tag(p.photo.link.thumb) %>
+                          <img src = "file:///<%= Rails.root %>/public<%= p.photo.link.thumb.url%>">
+                          
                       </div>
                       <div style = "width: 40%; display:inline-block; text-align:center; height:100%;">
                           Цена: <b><%= p.rur_cost.html_safe %></b>
