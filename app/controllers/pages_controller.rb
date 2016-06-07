@@ -15,7 +15,12 @@ class PagesController < ApplicationController
       format.html 
       format.json { render :json => @products }
       format.pdf do 
-        render pdf: "price_list"   # Excluding ".pdf" extension.
+        render pdf: "price_list",   # Excluding ".pdf" extension.
+               disposition:                    'inline',                 # default 'inline'
+               show_as_html:                   params.key?('debug')         # allow debugging based on url param
+        
+     
+                
       end
     end
   end
