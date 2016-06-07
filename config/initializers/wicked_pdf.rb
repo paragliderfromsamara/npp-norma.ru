@@ -26,7 +26,7 @@ module Assets
       if (pathname = asset_pathname(asset).to_s) =~ URI_REGEXP
         pathname
       else
-        "file:///#{pathname}"
+        "file://#{pathname}"
       end
     end
 
