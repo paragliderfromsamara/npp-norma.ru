@@ -17,8 +17,8 @@ class PhotoUploader < CarrierWave::Uploader::Base
   # Override the directory where uploaded files will be stored.
   # This is a sensible default for uploaders that are meant to be mounted:
   def store_dir
-    return "device_photos/#{model.product.s_name.underscore}" if model.product != nil
-	return "component_photos/#{model.component.name.underscore}" if model.component != nil
+    return "device_photos/#{model.product.id}" if model.product != nil
+	return "component_photos/#{model.component.id}" if model.component != nil
   end
   
   process :resize_to_fit => [800, 1200]
