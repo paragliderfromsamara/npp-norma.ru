@@ -19,3 +19,16 @@ WickedPdf.config = {
   # (but can be overridden in `render :pdf` calls)
   #layout: 'pdf.html'
 }
+module WickedPdfHelper
+module Assets
+
+    def wicked_pdf_asset_path(asset)
+      if (pathname = asset_pathname(asset).to_s) =~ URI_REGEXP
+        pathname
+      else
+        "file:///#{pathname}"
+      end
+    end
+
+end
+end
