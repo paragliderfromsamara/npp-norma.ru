@@ -18,7 +18,9 @@
               <%= @title %>
           </div>
           <div id="content">
+              
               <% @products.each do |p| %>
+                  <% if p != @products.first%><div class = "nobreak"><%end%>
                   <h3>
                       <%= p.s_name %>
                   </h3>
@@ -30,18 +32,25 @@
                   <div>
                       <div style = "width: 59%; display:inline-block;">
                           <img src = "file:///<%= Rails.root %>/public<%= p.photo.link.thumb.url%>">
-                          
                       </div>
                       <div style = "width: 40%; display:inline-block; text-align:center; height:100%;">
                           Цена: <b><%= p.rur_cost.html_safe %></b>
                       </div>
+                      
                   </div>
+                  <h3>Описание</h3>
                   <%= p.description.html_safe %>
-                  <% if p != @products.last %>
-                  <div class = 'alwaysbreak'>
-                  </div>
-                  <%end%>
+                  <% if !p.table_rows.blank? %>
+                      <div>
+                          <h3>Технические характеристики </h3>
+                          <table>
+                              <%= p.table_rows.html_safe %>
+                          </table>
+                      </div>
+                  <% end %>
+                  <% if p != @products.first%> </div><%end%>
               <%end%>
+              
           </div>
           
       </body>

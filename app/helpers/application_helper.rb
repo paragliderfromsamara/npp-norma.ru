@@ -30,7 +30,7 @@ module ApplicationHelper
       },
       {
         name: "<i class = 'fi-price-tag'></i> Прайс лист",
-        link: "/price_list.pdf",
+        link: "/price_list",
         rel: "no-follow",
         target:'_blank' 
       }
@@ -165,4 +165,56 @@ module ApplicationHelper
 		end
 		return content
 	end
+  
+  def make_new_price
+    copy_old_price_to_archive
+    @title = @header = "Актуальные цены на продукцию"
+    @products = Product.where(visibility: 'visible')
+    pdf = render_to_string pdf: "price_list", template: "pages/price_list.pdf", encoding: "UTF-8"
+    save_path = Rails.root.join(price_list_storage_url,'price_list.pdf')
+    File.open(save_path, 'wb') do |file|
+       file << pdf
+    end
+  end
+  
+  def price_list_link(short=false) #директория актуального прайс листа
+    short ? "/#{price_list_storage_url(true)}/price_list.pdf" : Rails.root.join(price_list_storage_url,'price_list.pdf')
+  end
+  
+  private 
+  
+  def doesActualPriceExist?
+    doesDirExist?(price_list_link)
+  end 
+  
+  def copy_old_price_to_archive
+    if doesDirExist?(price_list_link)
+      d = price_archive_url
+      old_price = File.new(price_list_link)
+      save_path = Rails.root.join(d, old_price_name(old_price.ctime))
+      File.open(save_path, 'wb') do |file|
+        file << old_price.read
+      end
+    end
+  end
+  
+  def doesDirExist?(d)
+    File.exists?(d)
+  end
+
+  def price_list_storage_url(short=false)#место хранения актуального прайса
+    d = short ? "prices/actual_price" : "public/prices/actual_price"
+    FileUtils.mkdir_p("public/prices/actual_price") unless File.exists?("public/prices/actual_price")
+    return d
+  end
+  
+  def price_archive_url(short=false) #архив прайс листов
+    d = short ? "prices/archive" : "public/prices/archive"
+    FileUtils.mkdir_p("public/prices/archive") unless File.exists?("public/prices/archive")
+    return d
+  end
+  
+  def old_price_name(date) # формирует название архивного прайслиста
+    date.strftime "прайс_от_%m-%d-%Y.pdf"
+  end
 end
