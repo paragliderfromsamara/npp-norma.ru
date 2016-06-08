@@ -30,7 +30,7 @@ module ApplicationHelper
       },
       {
         name: "<i class = 'fi-price-tag'></i> Прайс лист",
-        link: "/price_list",
+        link: "/price_list?make_price=true",
         rel: "no-follow",
         target:'_blank' 
       }
@@ -170,7 +170,17 @@ module ApplicationHelper
     copy_old_price_to_archive
     @title = @header = "Актуальные цены на продукцию"
     @products = Product.where(visibility: 'visible')
-    pdf = render_to_string pdf: "price_list", template: "pages/price_list.pdf", encoding: "UTF-8"
+    pdf = render_to_string(
+                            pdf: "price_list", 
+                            template: "pdf_layouts/price_list.pdf", 
+                            encoding: "UTF-8",
+                            margin:  {   top:               15,                     # default 10 (mm)
+                                         bottom:            10,
+                                         left:              10,
+                                         right:             10 },
+                            footer:  { html: {template:'pdf_layouts/footer.pdf'}},
+                            header:  { font_size: 8, right: '[page] из [topage]', left: 'НПП "Норма", телeфон: 8(846)99-77-524, факс: 8(846)99-77-523, e-mail: info@npp-norma.ru', spacing: 3}
+                          )
     save_path = Rails.root.join(price_list_storage_url,'price_list.pdf')
     File.open(save_path, 'wb') do |file|
        file << pdf

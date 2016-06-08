@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8' />
+    <%= wicked_pdf_stylesheet_link_tag "pdf" %>
+    <%= wicked_pdf_javascript_include_tag "number_pages" %>
+    <style type = 'text/css'>
+        div.alwaysbreak { page-break-before: always; }
+        div.nobreak:before { clear:both; }
+        div.nobreak { page-break-inside: avoid; }
+        body {font-family: Tahoma;}  
+        table {width: 100%;}
+        h3, h4 {color: #857065;}
+        h1.center {text-align:center; width: 100%; font-size: 16pt;}
+        #header {padding-top: 50px;}
+        .tb-pad-s {padding:5px 0 5px 0;}
+        .tb-pad-m {padding:15px 0 15px 0;}
+        .tb-pad-l {padding:25px 0 25px 0;}
+        .tb-pad-xl {padding:50px 0 50px 0;}
+        .black {color:black;}
+        .light-gray{color: #4f4f4f;}
+    </style>
+  </head>
+  <body onload='number_pages'>
+    
+          <div id="header">
+              <div style = "width: 100%; background-color: black; height: 180px; ">
+                  <div style = "display:inline-block; padding-top: 20px; padding-left: 20px;">
+                      <a href = 'http://npp-norma.ru'><img src = 'file:///<%= Rails.root %>/public/files/logo.png' width = "370px"></a>
+                  </div>
+                  <div style = "display:inline-block; padding-top: 10px;">
+                      <img src = 'file:///<%= Rails.root %>/public/files/main_title.png' width = "280px" >
+                  </div>
+              </div>
+              <h1 class = 'center tb-pad-l' style = 'padding-top: 150px;'>КАТАЛОГ ПРОДУКЦИИ от <%= Time.now.strftime("%d.%m.%Y") %></h1>
+              <p class = "light-gray" align = "center">
+                  Данный каталог содержит актуальную информацию о характеристиках и ценах выпускаемой нашим предприятием продукции.
+              </p>
+                  <table style = "position: relative; margin-top: 250px; font-size: 10pt;">
+                      <tr>
+                          <td style = "width: 45%;" valign = 'top'> 
+                              <h4>Контакты</h4>
+                               Адрес: 443080, Самарская область, г.Самара, <br />улица Санфировой д.95в<br />
+                               Телефон: 8(846)99-77-524<br /> 
+                               Факс: 8(846)99-77-523 <br />
+                               E-mail: info@npp-norma.ru<br />
+                               Сайт: <a href = "http://npp-norma.ru">npp-norma.ru</a>
+                          </td>
+                          <td style = "width:5%;">
+                          </td>
+                          <td valign = 'top'>
+                              <h4>Реквизиты</h4>
+                              ИНН: 6317002135; КПП: 631601001 <br /> 
+                              расч/счет 40702810700000000097<br />  в ОАО КБ «Солидарность»,
+                              БИК 043601706, <br />кор/счет 30101810800000000706 г.Самара
+                          </td>
+                      </tr>
+
+                  </table>
+                  
+          </div>
+          
+          
+          <div id="content">
+              <% @products.each do |p| %>
+                  <div class = "nobreak" style="padding-top: 14pt;">
+                  <h3>
+                      <%= p.s_name %>
+                  </h3>
+                  <% if p.name != p.s_name%>
+                  <h4>
+                      <%= p.name %>
+                  </h4>
+                  <%end%>
+                  <table>
+                      <tr>
+                          <td style = "width: 40%;" align = 'center'>
+                              <img src = "file:///<%= Rails.root %>/public<%= p.photo.link.thumb.url%>">
+                          </td>
+                          <td align = 'center' valign = 'middle'>
+                              Цена: <b><%= p.rur_cost.html_safe %></b>
+                          </td>
+                      </tr>
+                  </table>
+                  <h3>Описание</h3>
+                  <%= p.description.html_safe %>
+                  <% if !p.table_rows.blank? %>
+                      <div>
+                          <h3>Технические характеристики </h3>
+                          <table>
+                              <%= p.table_rows.html_safe %>
+                          </table>
+                      </div>
+                  <% end %>
+                   </div>
+              <%end%>
+          </div>
+  </body>
+</html>
