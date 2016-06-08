@@ -30,7 +30,7 @@ module ApplicationHelper
       },
       {
         name: "<i class = 'fi-price-tag'></i> Прайс лист",
-        link: "/price_list?make_price=true",
+        link: "/price_list",
         rel: "no-follow",
         target:'_blank' 
       }
@@ -179,7 +179,7 @@ module ApplicationHelper
                                          left:              10,
                                          right:             10 },
                             footer:  { html: {template:'pdf_layouts/footer.pdf'}},
-                            header:  { font_size: 8, right: '[page] из [topage]', left: 'НПП "Норма", телeфон: 8(846)99-77-524, факс: 8(846)99-77-523, e-mail: info@npp-norma.ru', spacing: 3}
+                            header:  { encoding: "UTF-8", font_size: 8, right: '[page] из [topage]', left: 'НПП "Норма", телeфон: 8(846)99-77-524, факс: 8(846)99-77-523, e-mail: info@npp-norma.ru', spacing: 3}
                           )
     save_path = Rails.root.join(price_list_storage_url,'price_list.pdf')
     File.open(save_path, 'wb') do |file|
