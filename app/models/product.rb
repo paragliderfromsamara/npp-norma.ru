@@ -9,6 +9,8 @@ class Product < ActiveRecord::Base
   belongs_to :photo
   belongs_to :product
   
+  default_scope {order('order_number ASC')}
+  
   def docs 
     self.attachment_files.where(file_type: "document")
   end

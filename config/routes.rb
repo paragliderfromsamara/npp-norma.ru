@@ -15,6 +15,7 @@ Rails.application.routes.draw do
   get "/contacts" => "pages#contacts"
   get "/about_us" => "pages#about_us"
   get "/price_list" => "pages#price_list"
+  get "/edit_product_list" => "products#edit_product_list"
   
   get "/signin" => "sessions#new"
   get "/signout" => "sessions#destroy"

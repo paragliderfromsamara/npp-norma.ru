@@ -13,10 +13,11 @@ tblRow = (c1, c2, isValField, i)->
     v += "<td>#{c1}</td><td>#{c2}</td>"
     if isValField then v += "<td style = \"width:30px; \"><a val = \"#{i}\" class = \"rmv_row\"><i class = \"fi-x\"></a></td>"
     "<tr>#{v}</tr>"
-
     
 
 rowsArray = new Array()
+arrLength = 0
+stat = [0, 0]
 
 buildArrayFromValue = ()->
     v = $.trim($("#product_table_rows").val())
@@ -114,11 +115,68 @@ initTableRowsPanel = ()->
     $("#addRowBut").bind("click", addRow)
 
 
+updStatusField = (i)->
+    stat[i] = stat[i]+1
+    $("#status_field").text("Успешно обновлено #{stat[0]}; Не удалось обновить #{stat[1]}")
+
+editListArrEvent = (el, isUp)->
+    v = parseInt($(el).attr("val"))
+    v -= 1
+    if isUp is true
+        new_v = if (v - 1) < 0 then arrLength - 1 else v - 1
+    else
+        new_v = if (v + 1) >= arrLength then 0 else v + 1
+    curEl = $(rowsArray[v])
+    newEl = $(rowsArray[new_v])
+    colImgBuf = newEl.find("#col_img").html()
+    colFrmBuf = newEl.find("#col_frm").html()
+    newEl.find("#col_img").html(curEl.find("#col_img").html())
+    newEl.find("#col_frm").html(curEl.find("#col_frm").html())
+    newEl.find("#product_order_number").attr('value',(new_v + 1))
+    curEl.find("#col_img").html(colImgBuf)
+    curEl.find("#col_frm").html(colFrmBuf)
+    curEl.find("#product_order_number").attr('value',(v + 1))
+    newEl.find("form[data-remote]").on "ajax:success", (e, data, status, xhr) ->
+            updStatusField(0)
+    curEl.find("form[data-remote]").on "ajax:success", (e, data, status, xhr) ->
+            updStatusField(0)
+    newEl.find("form[data-remote]").on "ajax:error", (e, data, status, xhr) ->
+            updStatusField(1)
+    curEl.find("form[data-remote]").on "ajax:error", (e, data, status, xhr) ->
+            updStatusField(1)
+
+
+initArrowsListner = ()->
+    $('.mvUp').bind("click", ()-> editListArrEvent(this, true))
+    $('.mvDwn').bind("click", ()-> editListArrEvent(this, false))
+ 
+sendForms = ()->
+    stat = [0, 0]
+    $("form[data-remote]").submit() 
+    
+    
+initEditProductList = (editList)->
+    rowsArray = $(editList).find('tbody')
+    arrLength = rowsArray.length
+    if arrLength > 0
+        initArrowsListner()
+        $('#save_list').bind("click", ()-> sendForms())
+        $("form[data-remote]").on "ajax:success", (e, data, status, xhr) ->
+            updStatusField(0)
+        $("form[data-remote]").on "ajax:error", (e, data, status, xhr) ->
+            updStatusField(1)
+            
+    console.log "#{arrLength}"
+
+
 r = ()-> 
+    initTableRowsPanel()
+    editList = document.getElementById("pEditList")
+    if editList isnt null then initEditProductList(editList)
     $("#p_photo").load(()-> 
                             $("#p_mini_container").width($("#p_photo").width())
                       )
-    initTableRowsPanel()
+ 
      
 
 $(document).ready r

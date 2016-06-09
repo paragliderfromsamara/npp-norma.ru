@@ -1,0 +1,54 @@
+<div class = 'row'>
+    <div class = 'small-12 medium-12 columns '>
+        <ul class="menu">
+          <li><a href="<%= root_path %>"><i class="fi-arrow-right"></i> <span>К списку продукции</span></a></li>
+        </ul>
+    </div>
+</div>
+
+<% if @products.blank? %>
+    <div class = 'row'>
+        <p>
+            Нет ни одного продукта
+        </p>
+    </div>
+<% else %>
+    <div class = 'row'>
+        <div class = 'small_12 columns'>
+            <table id = 'pEditList'>
+                <%i = 0%>
+                <% @products.each do |p| %>
+                    <% i += 1 %>
+                    <tbody o_number = "<%= i.to_s %>">
+                        <tr>
+                            <td style = 'width: 10px;'>
+                                <a class = 'mvUp' val = <%= i %> ><i class = 'fi-arrow-up'></i></a>
+                                <a class = 'mvDwn' val = <%= i %>><i class = 'fi-arrow-down'></i></a>
+                            </td>
+                            <td style = 'width: 300px;' id = 'col_img'>
+                                <%= image_tag p.alter_photo_thumb %>
+                            </td>
+                            <td valign = 'top' id = 'col_frm'>
+                                <h5><%= p.s_name %></h5>
+                                <%= form_for(p, html: {remote: true}) do |f| %>
+                                    <%= f.hidden_field :order_number, value: i %>
+                                    <%= f.label :cost, "Цена" %>
+                                    <%= f.text_field :cost, value: p.cost %>
+                                    <%= f.label :visibility, "Отображение в каталоге" %>
+                                    <select name="product[visibility]">
+                                		<% if p.visibility != nil %><option value = "<%= p.visibility %>"><%= p.visibility_status(p.visibility) %></option><% end %>
+                                		<% p.visibility_statuses.each do |status| %>
+                                			<% if status[1] != p.visibility %><option value = "<%= status[1] %>"><%= status[0] %></option><% end %>
+                                		<% end %>
+                                	</select>
+                                <%end%>
+                            </td>
+                        </tr>
+                    </tbody>
+                <%end%>
+            </table>
+            <p id = "status_field"></p>
+            <button type="button" id = 'save_list' class="success button">Сохранить изменения</button>
+        </div>
+    </div>
+<% end %>

@@ -126,6 +126,11 @@ class ProductsController < ApplicationController
 		end
   end
   
+  def edit_product_list
+    @title = @header = "Редактирование цен на изделия"
+    @products = Product.order("order_number ASC")
+  end
+
   private 
   
   def check_grants
@@ -136,11 +141,12 @@ class ProductsController < ApplicationController
       user_could_see_product?(true)
     when "new", "create"
       user_could_add_product?(true)
-    when "edit", "update"
+    when "edit", "update", "edit_product_list"
       user_could_edit_product?(true)
     when "units"
       user_could_see_units_list?(true)
     end
   end
+  
   
 end

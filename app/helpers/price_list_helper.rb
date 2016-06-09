@@ -47,7 +47,7 @@ module PriceListHelper
   def make_new_price
     copy_old_price_to_archive
     @title = @header = "Актуальные цены на продукцию"
-    @products = Product.where(visibility: 'visible', product_id: nil)
+    @products = Product.where(visibility: 'visible', product_id: nil).order("order_number ASC")
     pdf = render_to_string(
                             pdf: "price_list", 
                             template: "pdf_layouts/price_list.pdf", 

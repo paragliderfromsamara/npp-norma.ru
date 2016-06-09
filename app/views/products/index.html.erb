@@ -1,5 +1,13 @@
-
-<div class = 'row tb-pad-m'>
+<div class = 'row'>
+    <div class = 'small-12 medium-12 columns '>
+        <ul class="menu">
+          <%if user_could_edit_product?%>
+              <li><a href="/edit_product_list"><i class="fi-pencil"></i> <span>Изменить цены</span></a></li>
+          <%end%>
+        </ul>
+    </div>
+</div>
+<div class = 'row tb-pad-s'>
     <div id = 'subMenuWrapper' class = 'medium-2 columns hide-for-small-only'>
         <%= productCategoryMenu %>
     </div>
