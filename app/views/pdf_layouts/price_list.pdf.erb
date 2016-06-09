@@ -10,7 +10,7 @@
         div.nobreak { page-break-inside: avoid; }
         body {font-family: Arial; font-size: 10pt; margin: 0; padding: 0 0 0 1px; border: 0; outline: 0; width: 100%;}  
         table {width: 100%;}
-        h3, h4 {color: #aa8972;}
+        h3, h4 {color: #4f4f4f;}
         h1.center {text-align:center; width: 100%; font-size: 16pt;}
         .cost-field {font-size: 16pt;}
         .content-field {width: 90%; position:relative; margin-left: auto; margin-right:auto;}
@@ -36,9 +36,11 @@
                   </div>
               </div>
               <h1 class = 'center tb-pad-l' style = 'padding-top: 150px;'>КАТАЛОГ ПРОДУКЦИИ от <%= Time.now.strftime("%d.%m.%Y") %></h1>
+              <div class = 'content-field'>
               <p class = "light-gray" align = "center">
-                  Данный каталог содержит актуальную информацию о характеристиках и ценах выпускаемой нашим предприятием продукции.
+                  Данный каталог содержит актуальную информацию о характеристиках и ценах <br />выпускаемой нашим предприятием продукции.
               </p>
+              </div>
               <div class = 'content-field'>
                   <table style = "position: relative; margin-top: 250px; font-size: 10pt;">
                       <tr>
@@ -72,14 +74,15 @@
                       <table>
                           <tr>
                               <td colspan = '2'>
-                                  <h3>
+                                  <h2 style = 'padding-left:10px;'>
                                       <%= p.s_name %>
-                                  </h3>
+                                  </h2>
                                   <% if p.name != p.s_name%>
-                                  <h4>
+                                  <h3 style = 'padding-left:10px;'>
                                       <%= p.name %>
-                                  </h4>
+                                  </h3>
                                   <%end%>
+                                  <hr noshade size = 1/>
                               </td>
                           </tr>
                           <tr>
