@@ -183,7 +183,7 @@ module ApplicationHelper
                           )
     save_path = Rails.root.join(price_list_storage_url,'price_list.pdf')
     File.open(save_path, 'wb') do |file|
-       file << pdf
+       file << pdf.encode("ASCII-8BIT").force_encoding("utf-8")
     end
   end
   
