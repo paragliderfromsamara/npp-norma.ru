@@ -92,7 +92,7 @@ class Product < ActiveRecord::Base
   end
   
   def options
-	Product.where(:product_id => id)
+	  Product.where(:product_id => id)
   end
   
 end

@@ -69,63 +69,17 @@
           
           <div id="content">
               <% @products.each do |p| %>
-                 <div class = "nobreak">
-
-                      <table>
-                          <tr>
-                              <td colspan = '2'>
-                                  <h2 style = 'padding-left:10px;'>
-                                      <%= p.s_name %>
-                                  </h2>
-                                  <% if p.name != p.s_name%>
-                                  <h3 style = 'padding-left:10px;'>
-                                      <%= p.name %>
-                                  </h3>
-                                  <%end%>
-                                  <hr noshade size = 1/>
-                              </td>
-                          </tr>
-                          <tr>
-                              <td style = "width: 40%;" align = 'center'>
-                                  <img src = "file:///<%= Rails.root %>/public<%= p.photo.link.thumb.url%>">
-                              </td>
-
-                              <td align = 'center' valign = 'middle' style = 'background-color:#eae3d7;'>
-                                  <p class = 'cost-field'>Цена: <b><%= p.rur_cost(true).html_safe %></b></p>
-                                  <p>НДС не начисляется в связи<br />с применением УСН</p>
-                              </td>
-                          </tr>
-                          <tr>
-                              <td colspan = '2'>
-                                  <div class = "nobreak">
-                                  <table class = 'content-field'>
-                                      <tr>
-                                          <td>
-                                              <h3>Описание</h3>
-                                              <%= p.description.html_safe %>
-                                          </td>
-                                      </tr>
-                                      <% if !p.table_rows.blank? %>
-                                      <tr>
-                                          <td>
-                                              <div class = "nobreak">
-                                              <h3>Технические характеристики </h3>
-                                              <table>
-                                                  <%= p.table_rows.html_safe %>
-                                              </table>
-                                          </div>
-                                          </td>
-                                      </tr>
-                                      <% end %>
-                                  </table>
-                                  </div>
-                              </td>
-                          </tr>
-                      </table>
-                      
-                      
-                </div>
-                   
+                <%= price_list_product_part(p) %>
+                <% if !p.options.blank? %>
+                    <%p.options.each do |o|%>
+                        <%= price_list_product_part(o) %>
+                        <% if !o.options.blank?%>
+                            <%o.options.each do |so|%>
+                                <%= price_list_product_part(so) %>
+                            <%end%>
+                        <%end%>
+                    <%end%>
+                <%end%>   
               <%end%>
           </div>
   </body>
