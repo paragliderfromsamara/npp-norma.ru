@@ -8,17 +8,20 @@
         div.alwaysbreak { page-break-before: always; }
         div.nobreak:before { clear:both; }
         div.nobreak { page-break-inside: avoid; }
-        body {font-family: Tahoma;}  
+        body {font-family: Arial; font-size: 10pt; margin: 0; padding: 0 0 0 1px; border: 0; outline: 0; width: 100%;}  
         table {width: 100%;}
-        h3, h4 {color: #857065;}
+        h3, h4 {color: #aa8972;}
         h1.center {text-align:center; width: 100%; font-size: 16pt;}
-        #header {padding-top: 50px;}
+        .cost-field {font-size: 16pt;}
+        .content-field {width: 90%; position:relative; margin-left: auto; margin-right:auto;}
+        #header {padding-top: 50px; width: 100%;}
         .tb-pad-s {padding:5px 0 5px 0;}
         .tb-pad-m {padding:15px 0 15px 0;}
         .tb-pad-l {padding:25px 0 25px 0;}
         .tb-pad-xl {padding:50px 0 50px 0;}
         .black {color:black;}
         .light-gray{color: #4f4f4f;}
+        a {color: #857065;}
     </style>
   </head>
   <body onload='number_pages'>
@@ -36,6 +39,7 @@
               <p class = "light-gray" align = "center">
                   Данный каталог содержит актуальную информацию о характеристиках и ценах выпускаемой нашим предприятием продукции.
               </p>
+              <div class = 'content-field'>
                   <table style = "position: relative; margin-top: 250px; font-size: 10pt;">
                       <tr>
                           <td style = "width: 45%;" valign = 'top'> 
@@ -57,42 +61,68 @@
                       </tr>
 
                   </table>
-                  
+                 </div> 
           </div>
           
           
           <div id="content">
               <% @products.each do |p| %>
-                  <div class = "nobreak" style="padding-top: 14pt;">
-                  <h3>
-                      <%= p.s_name %>
-                  </h3>
-                  <% if p.name != p.s_name%>
-                  <h4>
-                      <%= p.name %>
-                  </h4>
-                  <%end%>
-                  <table>
-                      <tr>
-                          <td style = "width: 40%;" align = 'center'>
-                              <img src = "file:///<%= Rails.root %>/public<%= p.photo.link.thumb.url%>">
-                          </td>
-                          <td align = 'center' valign = 'middle'>
-                              Цена: <b><%= p.rur_cost.html_safe %></b>
-                          </td>
-                      </tr>
-                  </table>
-                  <h3>Описание</h3>
-                  <%= p.description.html_safe %>
-                  <% if !p.table_rows.blank? %>
-                      <div>
-                          <h3>Технические характеристики </h3>
-                          <table>
-                              <%= p.table_rows.html_safe %>
-                          </table>
-                      </div>
-                  <% end %>
-                   </div>
+                 <div class = "nobreak">
+
+                      <table>
+                          <tr>
+                              <td colspan = '2'>
+                                  <h3>
+                                      <%= p.s_name %>
+                                  </h3>
+                                  <% if p.name != p.s_name%>
+                                  <h4>
+                                      <%= p.name %>
+                                  </h4>
+                                  <%end%>
+                              </td>
+                          </tr>
+                          <tr>
+                              <td style = "width: 40%;" align = 'center'>
+                                  <img src = "file:///<%= Rails.root %>/public<%= p.photo.link.thumb.url%>">
+                              </td>
+
+                              <td align = 'center' valign = 'middle' style = 'background-color:#eae3d7;'>
+                                  <p class = 'cost-field'>Цена: <b><%= p.rur_cost(true).html_safe %></b></p>
+                                  <p>НДС не начисляется в связи<br />с применением УСН</p>
+                              </td>
+                          </tr>
+                          <tr>
+                              <td colspan = '2'>
+                                  <div class = "nobreak">
+                                  <table class = 'content-field'>
+                                      <tr>
+                                          <td>
+                                              <h3>Описание</h3>
+                                              <%= p.description.html_safe %>
+                                          </td>
+                                      </tr>
+                                      <% if !p.table_rows.blank? %>
+                                      <tr>
+                                          <td>
+                                              <div class = "nobreak">
+                                              <h3>Технические характеристики </h3>
+                                              <table>
+                                                  <%= p.table_rows.html_safe %>
+                                              </table>
+                                          </div>
+                                          </td>
+                                      </tr>
+                                      <% end %>
+                                  </table>
+                                  </div>
+                              </td>
+                          </tr>
+                      </table>
+                      
+                      
+                </div>
+                   
               <%end%>
           </div>
   </body>

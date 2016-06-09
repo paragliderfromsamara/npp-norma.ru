@@ -175,11 +175,11 @@ module ApplicationHelper
                             template: "pdf_layouts/price_list.pdf", 
                             encoding: "UTF-8",
                             margin:  {   top:               15,                     # default 10 (mm)
-                                         bottom:            10,
-                                         left:              10,
-                                         right:             10 },
+                                         bottom:            15,
+                                         left:              0,
+                                         right:             0},
                             footer:  { html: {template:'pdf_layouts/footer.pdf'}},
-                            header:  { html: {template:'pdf_layouts/header.pdf'}, spacing: 3}
+                            header:  { html: {template:'pdf_layouts/header.pdf'}, spacing: 7}
                           )
     save_path = Rails.root.join(price_list_storage_url,'price_list.pdf')
     File.open(save_path, 'wb') do |file|

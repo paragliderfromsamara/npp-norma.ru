@@ -46,7 +46,7 @@ module ActiveRecord
   	return p
     end
     
-    def rur_cost
+    def rur_cost(en = false)
       if cost == 0.0 || cost.blank?
         'не указана'
       else
@@ -58,7 +58,7 @@ module ActiveRecord
           v += i==3 ? "#{c} " : c
           i = 0 if i == 3
         end
-        return "<span class = 'stat'>#{v.strip.reverse}</span> рублей"
+        return "<span class = 'stat'>#{v.strip.reverse}</span> #{en ? "RUB" : "рублей"}"
       end
     end
 
