@@ -179,7 +179,7 @@ module ApplicationHelper
                                          left:              10,
                                          right:             10 },
                             footer:  { html: {template:'pdf_layouts/footer.pdf'}},
-                            header:  { font_size: 8, right: '[page] из [topage]'.force_encoding("UTF-8"), left: 'НПП "Норма", телeфон: 8(846)99-77-524, факс: 8(846)99-77-523, e-mail: info@npp-norma.ru'.force_encoding("UTF-8"), spacing: 3}
+                            header:  { font_name: "Arial", font_size: 8, right: '[page] из [topage]'.force_encoding("UTF-8"), left: 'НПП "Норма", телeфон: 8(846)99-77-524, факс: 8(846)99-77-523, e-mail: info@npp-norma.ru'.force_encoding("UTF-8"), spacing: 3}
                           )
     save_path = Rails.root.join(price_list_storage_url,'price_list.pdf')
     File.open(save_path, 'wb') do |file|
