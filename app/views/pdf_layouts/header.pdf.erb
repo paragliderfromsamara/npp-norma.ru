@@ -4,13 +4,32 @@
     <meta charset='utf-8' />
     <%= wicked_pdf_stylesheet_link_tag "pdf" %>
     <%= wicked_pdf_javascript_include_tag "number_pages" %>
+    <script>
+      function number_pages() {
+        var vars={};
+        var x=document.location.search.substring(1).split('&');
+        for(var i in x) {var z=x[i].split('=',2);vars[z[0]] = decodeURIComponent(z[1]);}
+        var x=['frompage','topage','page','webpage','section','subsection','subsubsection'];
+        for(var i in x) {
+          var y = document.getElementsByClassName(x[i]);
+          for(var j=0; j<y.length; ++j) y[j].textContent = vars[x[i]];
+        }
+      }
+    </script>
     <style type = 'text/css'>
         body {font-family: Arial; font-size: 10pt;}  
     </style>
   </head>
-  <body>
-      <p style = 'padding-top: 15; padding-bottom: 15px; float-left'>
-          <a href = "http://npp-norma.ru">www.npp-norma.ru</a>
-      </p>
+  <body onload="number_pages()">
+      <table style = "width:100%;">
+          <tr>
+              <td align = 'left' valign = 'top'>
+                  НПП "Норма", телeфон: 8(846)99-77-524, факс: 8(846)99-77-523, e-mail: info@npp-norma.ru
+              </td>
+              <td align = 'right' valign = 'top'>
+                  Страница <span class="page"></span> из <span class="topage"></span>
+              </td>
+          </tr>
+      </table>
   </body>
 </html>
