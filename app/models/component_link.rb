@@ -3,4 +3,10 @@ class ComponentLink < ActiveRecord::Base
   
   belongs_to :product
   belongs_to :component
+  
+  def self.optimize
+    ComponentLink.all.each do |cl|
+        cl.delete if cl.component.nil? || cl.product.nil? 
+    end
+  end
 end

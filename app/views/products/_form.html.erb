@@ -1,4 +1,4 @@
-<div class = 'row'>
+<div class = 'row tb-pad-s'>
     <div class = 'small-12 medium-10 medium-offset-1'>
         <%= form_for(@product) do |f| %>
           <% if @product.errors.any? %>
@@ -13,6 +13,11 @@
             </div>
           <% end %>
 
+          <div class = 'field'>
+              <% products = Product.all.order("name ASC") %>
+              <%= f.label :meta_tags, "Мета тэги" %><br />
+              <%= f.text_field :meta_tags %>
+          </div>
           <div class="field">
             <%= f.label :category_id, "Категория" %><br />
             <select name = 'product[category_id]'>

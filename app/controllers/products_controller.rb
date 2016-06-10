@@ -4,15 +4,15 @@ class ProductsController < ApplicationController
   before_action :check_grants#, only: [:new, :create, :edit, :update, :destroy]
   
   def index
+  optimize_db #application_helper 
 	product = Product.new
 	@cur = product.categoryById((params[:c]).to_i)
 	if @flag != 0	
 		@products = Product.where(visibility: 'visible', category_id: @cur[:id]) if user_type != 'admin'
 		@products = Product.where(category_id: @cur[:id]) if user_type == 'admin'
 	end
-	@title = "Производимая продукция: <span class = 'subheader'>#{@cur[:tab_name]}</span>"
-	@header = @title
-	@meta_description = @title
+	@title = "Производимая продукция"
+	@header = "#{@title}: <span class = 'subheader'>#{@cur[:tab_name]}</span>"
 	@robots_meta = [{:name => 'ROBOTS', :content => 'INDEX, FOLLOW'}]
     respond_to do |format|
       format.html # index.html.erb
@@ -31,6 +31,7 @@ class ProductsController < ApplicationController
 	  @title = @product.s_name
 	  @header = @product.s_name
 	  @meta_description = @product.note
+    
 	  @robots_meta = [{:name => 'ROBOTS', :content => 'INDEX, FOLLOW'}]
     respond_to do |format|
       format.html # show.html.erb

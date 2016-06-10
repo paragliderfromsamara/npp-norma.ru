@@ -1,4 +1,11 @@
 module ApplicationHelper
+  
+  def optimize_db
+    if user_type == 'admin' && params[:optimize_db] == 'true' 
+      ComponentLink.optimize
+    end
+  end
+  
   def my_title
     (@title == nil)? "Норма - Научно-Производственное Предприятие" : @title
   end
@@ -9,9 +16,13 @@ module ApplicationHelper
       return ""
     end
   end
-  def meta_content
-    default = "сопротивление изоляции, параметры влияния, рабочее затухание, рабочая емкость, сопротивление жил, сопротивление токопроводящих жил, высоковольтные испытания, система контроля электрический параметров кабелей связи, КИП, контрольно-измерительные приборы"
-    @meta_tags.blank? ? default : @meta_tags
+  def meta_description
+    default = "Производство и разработка контрольно измерительного оборудования для кабельной и полимерной промышленности"
+    @meta_description.blank? ? default : @meta_description
+  end
+  def meta_keywords
+    default = "микроомметр, тераомметр, измерительная система, измерительный комплекс, высоковольтная установка, разработка и производство приборов, автоматизация измерений"
+    @meta_keywords.blank? ? default : @meta_keywords
   end
   def mainMenuItems
     [

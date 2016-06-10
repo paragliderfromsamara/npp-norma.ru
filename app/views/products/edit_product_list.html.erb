@@ -31,9 +31,6 @@
                             <td valign = 'top' id = 'col_frm'>
                                 <h5><%= p.s_name %></h5>
                                 <%= form_for(p, html: {remote: true}) do |f| %>
-                                    <%= f.hidden_field :order_number, value: i %>
-                                    <%= f.label :cost, "Цена" %>
-                                    <%= f.text_field :cost, value: p.cost %>
                                     <%= f.label :visibility, "Отображение в каталоге" %>
                                     <select name="product[visibility]">
                                 		<% if p.visibility != nil %><option value = "<%= p.visibility %>"><%= p.visibility_status(p.visibility) %></option><% end %>
@@ -41,6 +38,13 @@
                                 			<% if status[1] != p.visibility %><option value = "<%= status[1] %>"><%= status[0] %></option><% end %>
                                 		<% end %>
                                 	</select>
+                                    <%= f.hidden_field :order_number, value: i %>
+                                    <%= f.label :cost, "Цена" %>
+                                    <%= f.text_field :cost, value: p.cost %>
+                                    <%= f.label :meta_tags, "Мета тэги" %>
+                                    <%= f.text_field :meta_tags, value: p.meta_tags %>
+                                    
+                                    
                                 <%end%>
                             </td>
                         </tr>

@@ -1,10 +1,11 @@
 <div class = 'row'>
-    <div class = 'small-11 small-offset-1 columns'>
-        <%= link_to 'Перейти к прибору', @product %>
-        <%= link_to 'Перейти к списку приборов', products_path %>
+    <div class = 'small-12 medium-12 columns '>
+        <ul class="menu">
+          <li><a href="<%= products_path %>"><i class="fi-arrow-right"></i> <span>К списку продукции</span></a></li>
+          <li><a href="<%= product_path(@product) %>"><i class="fi-arrow-right"></i> <span>К прибору</span></a></li>
+        </ul>
     </div>
 </div>
-
 
 <%= render 'form' %>
 

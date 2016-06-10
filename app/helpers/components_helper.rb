@@ -20,7 +20,7 @@ def product_show_components_table
 		components = Component.where(:component_type_id => t, :id => @product.component_links.select(:component_id))
 		v += "<tr><th align = 'left' colspan = '2'><p>#{t.name}</p></th><th id = 'linkRow'></th></tr>"
 		components.each do |c|
-			v += "<tr><td id = 'cPhoto' valign = 'middle'><a href = '#{ c.alter_photo }' data-lightbox='roadtrip' title = '#{ c.name }'>#{ image_tag c.alter_photo_mini, :height => '30px'  }</a></td><td valign = 'middle' align = 'left'><p>#{c.name}</p></td><td valign = 'middle' id = 'linkRow'>#{link_to 'подробнее', c}</td></tr>"
+			v += "<tr><td style = 'height: 60px;' id = 'cPhoto' valign = 'middle'><a href = '#{ c.alter_photo }' data-lightbox='roadtrip' title = '#{ c.name }'>#{ image_tag c.alter_photo_mini, :height => '30px'  }</a></td><td valign = 'middle' align = 'left'>#{c.name}</td><td valign = 'middle' id = 'linkRow'>#{link_to 'подробнее', c}</td></tr>"
 		end
 	end
 	return ("<table id = 'cTable'>#{v}</table>").html_safe
