@@ -11,8 +11,8 @@ class ProductsController < ApplicationController
 		@products = Product.where(visibility: 'visible', category_id: @cur[:id]) if user_type != 'admin'
 		@products = Product.where(category_id: @cur[:id]) if user_type == 'admin'
 	end
-	@title = "НОРМА - Научно-производственное предприятие"
-	@header = "#{Производимая продукция}: <span class = 'subheader'>#{@cur[:tab_name]}</span>"
+	@title = "НОРМА - Научно-производственное предприятие, Самара"
+	@header = "Производимая продукция: <span class = 'subheader'>#{@cur[:tab_name]}</span>"
 	@robots_meta = [{:name => 'ROBOTS', :content => 'INDEX, FOLLOW'}]
     respond_to do |format|
       format.html # index.html.erb
