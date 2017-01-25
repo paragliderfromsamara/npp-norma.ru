@@ -1,7 +1,7 @@
 <div class="row small-up-2 medium-up-3 large-up-4">
 <% @products.each do |p| %>
           <div class="column">
-            <a class = 'float-left' href = '<%= product_path(p)%>'><div class = 'th-img-container thumbnail'><div class = 'desc-cont text-center'><p><%= p.s_name%></p></div><%= image_tag p.photo.link.block%></div></a>
+            <a class = 'float-left' href = '<%= product_path(p)%>'><div class = 'th-img-container thumbnail'><div class = 'desc-cont text-center'><p><%= p.s_name%></p></div><%= image_tag p.photo.nil? ? "/files/nophoto.jpg" : p.photo.link.block%></div></a>
           </div>
 <%end%>
 </div>
