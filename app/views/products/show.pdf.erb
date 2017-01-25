@@ -17,7 +17,7 @@
               <%= @title %>
           </div>
           <div id="content">
-            <%= wicked_pdf_image_tag @product.photo.link.thumb %>
+            <%= wicked_pdf_image_tag @product.photo.nil? ? "/files/nophoto.jpg" : @product.photo.link.thumb %>
             
             <%= @product.description.html_safe %>
             

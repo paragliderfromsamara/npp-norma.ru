@@ -15,7 +15,7 @@ module PriceListHelper
              </tr>
              <tr>
                  <td style = 'width: 40%;' align = 'center'>
-                     <img src = 'file:///#{Rails.root}/public#{p.photo.link.thumb.url}'>
+                     <img src = 'file:///#{Rails.root}/public#{p.photo.nil? ? "/files/nophoto.jpg" : p.photo.link.thumb.url}'>
                  </td>
 
                  <td align = 'center' valign = 'middle' style = 'background-color:#eae3d7;'>
