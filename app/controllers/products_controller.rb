@@ -90,9 +90,9 @@ class ProductsController < ApplicationController
     @product = Product.find(params[:id])
 		respond_to do |format|
 		  if @product.update_attributes(params[:product])
-			if @product.photo == nil
+			if @product.photo.nil?
 				photo = Photo.find_by_product_id(@product.id)
-				@product.update_attributes(:photo_id => photo.id)
+				@product.update_attributes(:photo_id => photo.id) if !photo.nil?
 			end
 			format.html { redirect_to @product, :notice => 'Успешно обновлено' }
 			format.json { head :no_content }
