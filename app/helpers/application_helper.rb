@@ -1,5 +1,9 @@
 module ApplicationHelper
   
+  def is_office?
+    request.subdomains.first == 'office'
+  end
+  
   def optimize_db
     if user_type == 'admin' && params[:optimize_db] == 'true' 
       ComponentLink.optimize
@@ -25,27 +29,56 @@ module ApplicationHelper
     @meta_keywords.blank? ? default : @meta_keywords
   end
   def mainMenuItems
-    [
-      {
-        name: "Главная",
-        link: "/"
-      },
-      {
-        name: "Продукция",
-        #link: products_path,
-        items: getMenuProductsList
-      },
-      {
-        name: "Контакты",
-        link: "/contacts"
-      },
-      {
-        name: "<i class = 'fi-price-tag'></i> Прайс лист",
-        link: "/price_list",
-        rel: "no-follow",
-        target:'_blank' 
-      }
-    ]
+    if is_office?
+      if signed_in?
+        [
+          {
+            name: "Пользователи",
+            #link: products_path,
+            link: users_path
+          }, 
+          {
+            name: "Протоколы ремонта",
+            link: repair_protocols_path
+          }
+        ]
+      else
+        [
+          {
+            name: "Вход <i class = 'fi-arrow-right'></i>",
+            link: "/signin"
+          }
+        ]
+      end
+    else
+      m = [
+        {
+          name: "Главная",
+          link: "/"
+        },
+        {
+          name: "Продукция",
+          #link: products_path,
+          items: getMenuProductsList
+        },
+        {
+          name: "Контакты",
+          link: "/contacts"
+        },
+        {
+          name: "<i class = 'fi-price-tag'></i> Прайс лист",
+          link: "/price_list",
+          rel: "no-follow",
+          target:'_blank' 
+        }
+      ]
+      m.push(        {
+            name: "<i class = 'fi-refresh'></i>  Обновить прайс",
+            link: "/price_list?make_price=true",
+            rel: "no-follow",
+            target:'_blank' 
+              }) if user_type == "admin"
+    end
   end
   def drawMenu
     h = ""
@@ -154,14 +187,25 @@ module ApplicationHelper
       return v
   end
   
-	def collection_list(options, name, current_value)
+	def collection_list(options, name, current_value=[])
 		output = ""
 		options_str = ""
-		options_str += "<option value = '#{current_value[0]}'>#{current_value[1]}</option>" if current_value != []
+		options_str += "<option value = '#{current_value[0]}'>#{current_value[1]}</option>" if !current_value.blank?
 		options.each do |option|
 			options_str += "<option value = '#{option[0]}'>#{option[1]}</option>" if current_value[0] != option[0]
 		end
 		select_tg = "<select name = '#{name}'>#{options_str}</select>"
+		return select_tg.html_safe
+	end
+  
+	def my_collection_list(options, current_value, html)
+		output = ""
+		options_str = ""
+		options_str += "<option value = '#{current_value[:id]}'>#{current_value[:name]}</option>" if !current_value.nil?
+		options.each do |option|
+			options_str += "<option value = '#{option[:id]}'>#{option[:name]}</option>" if option != current_value
+		end
+		select_tg = "<select#{" name=#{html[:name]}" if !html[:name].nil?}#{" id=#{html[:id]}" if !html[:id].nil?}#{" class=#{html[:class]}" if !html[:class].nil?}>#{options_str}</select>"
 		return select_tg.html_safe
 	end
   

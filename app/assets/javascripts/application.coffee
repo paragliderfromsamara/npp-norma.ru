@@ -17,7 +17,17 @@
 #= require foundation-sites
 #= require_tree .
 
-
+initListners = ->
+    $(".del-ph-but").on "ajax:success", (data)-> $(this).parents(".column").remove()
+    $(".as-main-photo").click ()->
+        id = $(this).parents("[data-photo-id]").attr("data-photo-id")
+        console.log id
+        $("#product_photo_id").val(id)
+        $("[data-photo-id]").each ()->
+            el = $(this)
+            ch = el.find(".as-main-photo")
+            if $(this).attr("data-photo-id") isnt id then ch.show() else ch.hide()  
+    
 footerControl = ()->
     mQuery = Foundation.MediaQuery.current
     tbHeight = if mQuery is 'small' then $(".title-bar").outerHeight(true) else $("#top_bar").outerHeight(true)
@@ -38,6 +48,7 @@ r = ()->
     $(document).foundation()
     footerControl()
     $('img').load ()-> footerControl()
+    initListners()
     $(window).resize ()-> footerControl()
     
 

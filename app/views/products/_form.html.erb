@@ -84,18 +84,46 @@
           <br />
          <hr />
           <b>Фотографии</b>
-          <% if @product.photos != [] %>
-        		<%= link_to 'Редактировать фотографии', photos_path(:product_id => @product.id) %>
-          <% end %>
           <br />
           <div class="field">
         		<%= f.label :uploaded_photos, "Загрузить фотографии" %><br />
         		<%= f.file_field :uploaded_photos, :multiple => 'true' %>
           </div>
-          <%= f.collection_select :photo_id, @device_photos, :id, :id if @device_photos != [] and @action == 'update' %>
-          <br />
+          <% if controller.action_name == 'update' || controller.action_name == 'edit' %>
+              <%= f.hidden_field :photo_id, value: @product.photo_id %>
+              <br />
+              <div id = "photos-list" >
+                  <% if @device_photos.blank? %>
 
+                  <div class = 'row'>
+                      <div class = 'small-12 columns'>
+                          <p>
+                              Нет ни одной фотографии данного продукта
+                          </p>
+                      </div>
+                  </div>
+                  <%else%>
+                      <div class = 'row small-up-1 medium-up-3' id = "photos-list">
+                          <% @device_photos.each do |ph|  %>
+                              <div class = "column tb-pad-s" data-photo-id = <%= ph.id %> >
+                                  <div>                                  <a class = 'as-main-photo' style = "display: <%= @product.photo_id == ph.id ? "none" : "inline-block" %>;">
+                                      <i class = 'fi-check'></i>
+                                  </a>
+                                  <%= link_to "<i class = \"fi-x\"></i>".html_safe, ph, method: :delete, remote: true, title: "Удалить", confirm: "Вы уверены, что хотите удалить фото?", class: "del-ph-but" %>
+                                  </div>
 
+                                  <%= image_tag ph.link.block %>
+                              </div>      
+                          <%end%>
+                      </div>
+                  <% end %>
+              </div>
+              
+
+          <% end %>
+          
+
+          
           <div class="actions">
             <%= f.submit "Создать" if @action == 'create' %>
         	<%= f.submit "Сохранить изменения" if @action == 'update' %>
