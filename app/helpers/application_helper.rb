@@ -78,7 +78,9 @@ module ApplicationHelper
             rel: "no-follow",
             target:'_blank' 
               }) if user_type == "admin"
+              return m
     end
+    
   end
   def drawMenu
     h = ""
